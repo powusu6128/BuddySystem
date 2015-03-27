@@ -2,12 +2,12 @@ import java.util.ArrayList;
 
 public class MemoryManager {
 	
-	static ArrayList<BlockOMemory> memoryBlocks;
-	static int[] freeMemory;
-	static long minMemorySize;
-	static long maxMemorySize;
-	static int processID = 0;
-	public static final int NO_BUDDY = -1;
+	private static ArrayList<BlockOMemory> memoryBlocks;
+	private static int[] freeMemory;
+	private static long minMemorySize;
+	private static long maxMemorySize;
+	private static final int NO_BUDDY = -1;
+	private static final int NO_PROCESS = -1;
 	
 	public MemoryManager(long minMemorySize, long maxMemorySize){
 		if(!Functions.isPowerOfTwo(minMemorySize) && !Functions.isPowerOfTwo(maxMemorySize)){
@@ -16,6 +16,7 @@ public class MemoryManager {
 		MemoryManager.minMemorySize = minMemorySize;
 		MemoryManager.maxMemorySize = maxMemorySize;
 		freeMemory = new int[Functions.log2(maxMemorySize)];
+		memoryBlocks = new ArrayList<>();
 	}
 
 	public static double getMinMemorySize() {
@@ -36,7 +37,7 @@ public class MemoryManager {
      * @param buddy
      * @param id 
      */
-    private static void AllocateMemory(long size, long processSize, boolean isProcess, int buddy, int id)
+    public void AllocateMemory( long processSize, int id)
     {
         boolean noSpaceAvailable = false;
         if (processSize < minMemorySize)
@@ -45,18 +46,16 @@ public class MemoryManager {
             System.out.println("Process size greater than maximum size allowed");
         else
         {
-            boolean rounding = true;
             int x = 0;
             boolean sizeFound = false;
-            double closestAvailableMemorySize = 0;
             //finds power of 2 closest and >= processSize
             if (Functions.isPowerOfTwo(processSize))
             {
-                x = Functions.logTwo(processSize);
+                x = Functions.log2(processSize);
             }
             else
             {
-                x = Functions.logTwo(processSize) + 1;
+                x = Functions.log2(processSize) + 1;
             }
             //uses that power of 2 to look in freememory array for available space
             while (!sizeFound)
@@ -82,14 +81,14 @@ public class MemoryManager {
                 int i = 0;
                 while(!memoryFound)
                 {
-                  if (memoryBlocks.get(i).getSize() == processSize && !memoryBlocks.get(i).isProcess())
+                  if (memoryBlocks.get(i).getProcessSize() == processSize && !memoryBlocks.get(i).isProcess())
                     {
-                        if (processSize < (memoryBlocks.get(i).getSize() / 2))
+                        if (processSize < (memoryBlocks.get(i).getProcessSize() / 2))
                         {
                             //Split and make babies!!!
-                            int blockSize = memoryBlocks.get(i).getSize();
-                            memoryBlocks.add(i+1, new BlockOMemory((blockSize/2),0,false,i,null));
-                            memoryBlocks.get(i).setSize(blockSize/2);
+                            long blockSize = memoryBlocks.get(i).getMemorySize();
+                            memoryBlocks.add(i+1, new BlockOMemory((blockSize/2),0,false,i,NO_PROCESS));
+                            memoryBlocks.get(i).setMemorySize(blockSize/2);
                         }
                         else
                         {
@@ -111,7 +110,7 @@ public class MemoryManager {
 
 
 	
-	public void deallocateMemory(BlockOMemory process){
+	public void deallocateMemory(int process){
 		/**
      * deallocate - This method will
      *
@@ -122,7 +121,7 @@ public class MemoryManager {
         for (BlockOMemory x : memoryBlocks) {
 
             //if the process IDs match
-            if (process.getProcessID() == x.getProcessID()) {
+            if (process == x.getProcessID()) {
 
                 x.setProcessSize(0);
                 x.setIsProcess(false);
@@ -144,16 +143,16 @@ public class MemoryManager {
 			//If so, we will merge them into 1 big block.
 			//If we do a merge, we will run this method again, in case there needs to be more merges performed.
 			BlockOMemory leftPiece = memoryBlocks.get(i);
-			BlockOMemory rightPiece = memoryBlocks.get(i+1)
+			BlockOMemory rightPiece = memoryBlocks.get(i+1);
 			//Check if these processes are buddies
-			if (leftPiece.getMemorySize() == rightPiece.getMemorySize() && leftPiece.buddy == i+1 && rightPiece.buddy==i && leftPiece.isProcess() && rightPiece.isProcess())
+			if (leftPiece.getMemorySize() == rightPiece.getMemorySize() && leftPiece.getBuddy() == i+1 && rightPiece.getBuddy()==i && leftPiece.isProcess() && rightPiece.isProcess())
 			{
 				//We know these two are buddies, so we must now perform a merge
-				leftPiece.setMemorySize(leftPiece.getMemorySize() * 2); //coalesce the blocks into one big piece
+				leftPiece.setMemorySize(leftPiece.getMemorySize()* 2); //coalesce the blocks into one big piece
 				memoryBlocks.remove(i+1);
 				//Update links
 				leftPiece.setBuddy(NO_BUDDY);
-				doMerge(); //Run through the process again
+				mergeMemory(); //Run through the process again
 			}
 		}
 }
