@@ -1,6 +1,10 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+/**
+ * Controller used to talk to GUI
+ *
+ */
 public class Main {
 
 	public static void main(String[] args) {
@@ -19,8 +23,8 @@ public class Main {
 		m.allocateMemory(16, 9);
 		m.allocateMemory(32, 56);
 		m.allocateMemory(2, 89);
+		m.deallocateMemory(89);
 		System.out.println("Printing array of memory.");
 		System.out.println(m);
-
 	}
 }
