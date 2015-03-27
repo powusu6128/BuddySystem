@@ -31,7 +31,7 @@ public class MemoryManager {
 		return maxMemorySize;
 	}
 	
-		/**
+	/**
      * This method allows memory to be allocated using the Memory Buddy System.
      * A list of available memory slots is checked to see if any memory is available.
      *
@@ -70,6 +70,7 @@ public class MemoryManager {
                 else if (freeMemory[x] > 0)
                 {
                     sizeFound = true;
+                    
                 }
                 else
                 {
@@ -80,11 +81,11 @@ public class MemoryManager {
             {
                 boolean memoryFound = false;
                 int i = 0;
-                while(!memoryFound)
+                while(!memoryFound && !memoryBlocks.get(i).equals(null))
                 {
-                  if (memoryBlocks.get(i).getProcessSize() == processSize && !memoryBlocks.get(i).isProcess())
+                  if (memoryBlocks.get(i).getMemorySize() >= processSize && !memoryBlocks.get(i).isProcess() && memoryBlocks.get(i).getMemorySize() == Math.pow(2, x))
                     {
-                        if (processSize < (memoryBlocks.get(i).getProcessSize() / 2))
+                        if (processSize < (memoryBlocks.get(i).getMemorySize() / 2))
                         {
                             //Split and make babies!!!
                             long blockSize = memoryBlocks.get(i).getMemorySize();
@@ -100,6 +101,7 @@ public class MemoryManager {
                             freeMemory[x] = freeMemory[x] + 1;
                         }
                      }
+					 i++;
                 }
             }
             else
