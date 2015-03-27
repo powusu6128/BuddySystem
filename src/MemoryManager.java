@@ -37,6 +37,89 @@ public class MemoryManager {
 	public static double getMaxMemorySize() {
 		return maxMemorySize;
 	}
+<<<<<<< HEAD
+=======
+	
+	/**
+     * This method allows memory to be allocated using the Memory Buddy System.
+     * A list of available memory slots is checked to see if any memory is available.
+     *
+     * @param processSize
+     * @param id 
+     */
+    public void AllocateMemory( long processSize, int id)
+    {
+        boolean noSpaceAvailable = false;
+        if (processSize < minMemorySize)
+            System.out.println("Process size less than minimum size allowed.");
+        else if (processSize > (maxMemorySize / 2))
+            System.out.println("Process size greater than maximum size allowed");
+        else
+        {
+            int x = 0;
+            boolean sizeFound = false;
+            //finds power of 2 closest and >= processSize
+            if (Functions.isPowerOfTwo(processSize))
+            {
+                x = Functions.log2(processSize);
+            }
+            else
+            {
+                x = Functions.log2(processSize) + 1;
+            }
+            //uses that power of 2 to look in freememory array for available space
+            while (!sizeFound)
+            {
+                if (Math.pow(2, x) > (maxMemorySize / 2))
+                {
+                    noSpaceAvailable = true;
+                    break;
+                    //have exceeded maximum space
+                }
+                else if (freeMemory[x] > 0)
+                {
+                    sizeFound = true;
+                    
+                }
+                else
+                {
+                    x++;
+                }
+            }
+            if (!noSpaceAvailable)
+            {
+                boolean memoryFound = false;
+                int i = 0;
+                while(!memoryFound && !memoryBlocks.get(i).equals(null))
+                {
+                  if (memoryBlocks.get(i).getMemorySize() >= processSize && !memoryBlocks.get(i).isProcess() && memoryBlocks.get(i).getMemorySize() == Math.pow(2, x))
+                    {
+                        if (processSize < (memoryBlocks.get(i).getMemorySize() / 2))
+                        {
+                            //Split and make babies!!!
+                            long blockSize = memoryBlocks.get(i).getMemorySize();
+                            memoryBlocks.add(i+1, new BlockOMemory((blockSize/2),0,false,i,NO_PROCESS));
+                            memoryBlocks.get(i).setMemorySize(blockSize/2);
+                        }
+                        else
+                        {
+                            memoryFound = true;
+                            memoryBlocks.get(i).setProcessSize(processSize);
+                            memoryBlocks.get(i).setIsProcess(true);
+                            memoryBlocks.get(i).setProcessID(id);
+                            freeMemory[x] = freeMemory[x] + 1;
+                        }
+                     }
+					 i++;
+                }
+            }
+            else
+            {
+                System.out.println("No Space available to add this process.");
+            }
+        }
+    }
+>>>>>>> 5f8903c2f3949d0061da4deab0c539cdc7bafc42
 
 	/**
 	 * This method allows memory to be allocated using the Memory Buddy System.
