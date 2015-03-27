@@ -58,4 +58,11 @@ public class BlockOMemory {
 	public void setProcessID(int id){
 		this.processID = id;
 	}
+
+	@Override
+	public String toString() {
+		return "BlockOMemory [memorySize=" + memorySize + ", processSize="
+				+ processSize + ", haveProcess=" + haveProcess + ", processID="
+				+ processID + ", buddy=" + buddy + "]";
+	}
 }

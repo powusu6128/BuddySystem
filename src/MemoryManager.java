@@ -15,8 +15,12 @@ public class MemoryManager {
 		}
 		MemoryManager.minMemorySize = minMemorySize;
 		MemoryManager.maxMemorySize = maxMemorySize;
-		freeMemory = new int[Functions.log2(maxMemorySize)];
 		memoryBlocks = new ArrayList<>();
+		// Add initial block of memory
+		memoryBlocks.add(new BlockOMemory(64, 0, false, NO_BUDDY, NO_PROCESS));
+		freeMemory = new int[Functions.log2(maxMemorySize)];
+		// Set freememory to maxMemory
+		freeMemory[freeMemory.length - 1] = 1;
 	}
 
 	public static double getMinMemorySize() {
@@ -30,11 +34,8 @@ public class MemoryManager {
 		/**
      * This method allows memory to be allocated using the Memory Buddy System.
      * A list of available memory slots is checked to see if any memory is available.
-     * 
-     * @param size
+     *
      * @param processSize
-     * @param isProcess
-     * @param buddy
      * @param id 
      */
     public void AllocateMemory( long processSize, int id)
