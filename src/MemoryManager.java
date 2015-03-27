@@ -7,6 +7,7 @@ public class MemoryManager {
 	static long minMemorySize;
 	static long maxMemorySize;
 	static int processID = 0;
+	public static final int NO_BUDDY = -1;
 	
 	public MemoryManager(long minMemorySize, long maxMemorySize){
 		if(!Functions.isPowerOfTwo(minMemorySize) && !Functions.isPowerOfTwo(maxMemorySize)){
@@ -54,7 +55,25 @@ public class MemoryManager {
     }//end deallocate
 	
 	
-	public void mergeMemory(){
-		
-	}
+	private void mergeMemory()
+	{
+		for (int i = 0; i<memoryBlocks.size() - 1; i++)
+		{
+			//We will iterate through the array and check if the block and it's neighbor are "buddies", and both free (isProcess() == false).
+			//If so, we will merge them into 1 big block.
+			//If we do a merge, we will run this method again, in case there needs to be more merges performed.
+			BlockOMemory leftPiece = memoryBlocks.get(i);
+			BlockOMemory rightPiece = memoryBlocks.get(i+1)
+			//Check if these processes are buddies
+			if (leftPiece.getMemorySize() == rightPiece.getMemorySize() && leftPiece.buddy == i+1 && rightPiece.buddy==i && leftPiece.isProcess() && rightPiece.isProcess())
+			{
+				//We know these two are buddies, so we must now perform a merge
+				leftPiece.setMemorySize(leftPiece.getMemorySize() * 2); //coalesce the blocks into one big piece
+				memoryBlocks.remove(i+1);
+				//Update links
+				leftPiece.setBuddy(NO_BUDDY);
+				doMerge(); //Run through the process again
+			}
+		}
+}
 }

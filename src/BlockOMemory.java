@@ -3,16 +3,29 @@ public class BlockOMemory {
 	private long memorySize;
 	private double processSize;
 	private boolean haveProcess;
-        private String processID;
+    private String processID;
+	private int buddy; //the location in our array where this blocks buddy is located
 	
-	public BlockOMemory(long memorySize, long processSize, boolean haveProcess, String processID){
+	public BlockOMemory(long memorySize, long processSize, boolean haveProcess, String processID, int buddy){
 		if(!Functions.isPowerOfTwo(processSize))
 		this.memorySize = memorySize;
 		this.processSize = processSize;
 		this.haveProcess = haveProcess;
-                this.processID = processID;
+		this.processID = processID;
+		this.buddy = buddy;
 	}
 
+	
+	private int getBuddy()
+	{
+		return buddy;
+	}
+	
+	private int setBuddy(int newBuddy)
+	{
+		buddy = newBuddy;
+	}
+	
 	public double getProcessSize() {
 		return processSize;
 	}
@@ -33,8 +46,14 @@ public class BlockOMemory {
 		return memorySize;
 	}
         
-        public String getProcessID(){
-            return processID;
-        }
-         
+    public String getProcessID(){
+        return processID;
+    }
+	
+	public void setMemorySize(int newSize)
+	{
+		memorySize = newSize;
+	}
+	
+	
 }
