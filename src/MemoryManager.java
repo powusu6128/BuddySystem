@@ -30,10 +30,31 @@ public class MemoryManager {
 	}
 	
 	public void deallocateMemory(BlockOMemory process){
-		
-	}
+		/**
+     * deallocate - This method will
+     *
+     * @param thing process or something that will be stored in memory
+     */
+
+        //Traverse through every Block in memory and find the matching 
+        for (BlockOMemory x : memoryBlocks) {
+
+            //if the process IDs match
+            if (process.getProcessID() == x.getProcessID()) {
+
+                x.setProcessSize(0);
+                x.setIsProcess(false);
+
+            }//end if
+
+        }//end for
+
+        mergeMemory();
+
+    }//end deallocate
 	
-	public void mergeMemory(BlockOMemory process1, BlockOMemory process2){
+	
+	public void mergeMemory(){
 		
 	}
 }
