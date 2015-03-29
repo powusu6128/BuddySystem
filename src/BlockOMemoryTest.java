@@ -17,6 +17,7 @@ import static org.junit.Assert.*;
  * @author Justin Hyland
  */
 public class BlockOMemoryTest {
+	private static final double DELTA = 0.0000000001;
     
     public BlockOMemoryTest() {
     }
@@ -37,60 +38,7 @@ public class BlockOMemoryTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of getBuddy method, of class BlockOMemory.
-     */
-    @Test
-    public void testGetBuddy() {
-        System.out.println("getBuddy");
-        BlockOMemory instance = new BlockOMemory(32,16,true,1,2);
-        BlockOMemory instance1 = new BlockOMemory(32,16,true,4,2);
-        BlockOMemory instance2 = new BlockOMemory(32,16,true,3,2);
-        int expResult = 1;
-        int result = instance.getBuddy();
-        assertEquals(expResult, result);
-        
-        int expResult1 = 4;
-        int result1 = instance1.getBuddy();
-        assertEquals(expResult1, result1);
-        
-        int expResult2 = 3;
-        int result2 = instance2.getBuddy();
-        assertEquals(expResult2, result2);
-       
-    }
 
-    /**
-     * Test of setBuddy method, of class BlockOMemory.
-     */
-    @Test
-    public void testSetBuddy() {
-        System.out.println("setBuddy");
-        int newBuddy = 6;
-        int newBuddy1 = 12;
-        int newBuddy2 = 64;
-        BlockOMemory instance = new BlockOMemory(32,16,true,1,2);
-        BlockOMemory instance1 = new BlockOMemory(32,16,true,4,3);
-        BlockOMemory instance2 = new BlockOMemory(32,16,true,3,5);
-        instance.setBuddy(newBuddy);
-        instance1.setBuddy(newBuddy1);
-        instance2.setBuddy(newBuddy2);
-        
-        int expResult = newBuddy;
-        int result = instance.getBuddy();
-        assertEquals(expResult, result );
-        
-        int expResult1 = newBuddy1;
-        int result1 = instance1.getBuddy();
-        assertEquals(expResult1, result1);
-        
-        int expResult2 = newBuddy2;
-        int result2 = instance2.getBuddy();
-        assertEquals(expResult2, result2);
-        
-        
-        
-    }
 
     /**
      * Test of getProcessSize method, of class BlockOMemory.
@@ -98,10 +46,10 @@ public class BlockOMemoryTest {
     @Test
     public void testGetProcessSize() {
         System.out.println("getProcessSize");
-        BlockOMemory instance = new BlockOMemory(32,16,true,0,0);
-        BlockOMemory instance1 = new BlockOMemory(32,8,true,0,0);
-        BlockOMemory instance2 = new BlockOMemory(32,256,true,0,0);
-        BlockOMemory instance3 = new BlockOMemory(32,64,true,0,0);
+        BlockOMemory instance = new BlockOMemory(32,16,true,null,0);
+        BlockOMemory instance1 = new BlockOMemory(32,8,true,null,0);
+        BlockOMemory instance2 = new BlockOMemory(32,256,true,null,0);
+        BlockOMemory instance3 = new BlockOMemory(32,64,true,null,0);
         
         double expResult = 16;
         double result = instance.getProcessSize();
@@ -114,10 +62,10 @@ public class BlockOMemoryTest {
         
         double expResult3 = 64;
         double result3 = instance3.getProcessSize();
-        assertEquals(expResult, result,0.0000000001);
-        assertEquals(expResult1, result1,0.0000000001);
-        assertEquals(expResult2, result2,0.0000000001);
-        assertEquals(expResult3, result3,0.0000000001);
+        assertEquals(expResult, result,  DELTA);
+        assertEquals(expResult1, result1,DELTA);
+        assertEquals(expResult2, result2,DELTA);
+        assertEquals(expResult3, result3,DELTA);
         
         
     }
@@ -129,7 +77,7 @@ public class BlockOMemoryTest {
     public void testSetProcessSize() {
         System.out.println("setProcessSize");
         double processSize = 32;
-        BlockOMemory instance = new BlockOMemory(32,16,true,0,0);
+        BlockOMemory instance = new BlockOMemory(32,16,true,null,0);
         instance.setProcessSize(processSize);
         assertEquals(processSize, instance.getProcessSize(), 0.0000000001);
     }
@@ -140,10 +88,10 @@ public class BlockOMemoryTest {
     @Test
     public void testIsProcess() {
         System.out.println("isProcess");
-        BlockOMemory instance = new BlockOMemory(32,16,true,0,0);
-        BlockOMemory instance1 = new BlockOMemory(32,16,false,0,0);
-        BlockOMemory instance2 = new BlockOMemory(32,16,true,0,0);
-        BlockOMemory instance3 = new BlockOMemory(32,16,false,0,0);
+        BlockOMemory instance = new BlockOMemory(32,16,true,null,0);
+        BlockOMemory instance1 = new BlockOMemory(32,16,false,null,0);
+        BlockOMemory instance2 = new BlockOMemory(32,16,true,null,0);
+        BlockOMemory instance3 = new BlockOMemory(32,16,false,null,0);
         boolean expResult = true;
         boolean result = instance.isProcess();
         assertEquals(expResult, result);
@@ -174,10 +122,10 @@ public class BlockOMemoryTest {
         boolean haveProcess2 = false;
         boolean haveProcess3 = false;
         
-        BlockOMemory instance = new BlockOMemory(32,16,true,0,0);
-        BlockOMemory instance1 = new BlockOMemory(32,16,false,0,0);
-        BlockOMemory instance2 = new BlockOMemory(32,16,true,0,0);
-        BlockOMemory instance3 = new BlockOMemory(32,16,false,0,0);
+        BlockOMemory instance = new BlockOMemory(32,16,true,null,0);
+        BlockOMemory instance1 = new BlockOMemory(32,16,false,null,0);
+        BlockOMemory instance2 = new BlockOMemory(32,16,true,null,0);
+        BlockOMemory instance3 = new BlockOMemory(32,16,false,null,0);
         
         instance.setIsProcess(haveProcess);
         instance1.setIsProcess(haveProcess1);
@@ -209,8 +157,8 @@ public class BlockOMemoryTest {
     @Test
     public void testGetMemorySize() {
         System.out.println("getMemorySize");
-         BlockOMemory instance = new BlockOMemory(32,16,true,0,0);
-         BlockOMemory instance1 = new BlockOMemory(64,16,true,0,0);
+         BlockOMemory instance = new BlockOMemory(32,16,true,null,0);
+         BlockOMemory instance1 = new BlockOMemory(64,16,true,null,0);
         long expResult = 32;
         long result = instance.getMemorySize();
         assertEquals(expResult, result);
@@ -227,8 +175,8 @@ public class BlockOMemoryTest {
     @Test
     public void testGetProcessID() {
         System.out.println("getProcessID");
-       BlockOMemory instance = new BlockOMemory(32,16,true,0,2);
-       BlockOMemory instance1 = new BlockOMemory(64,16,true,0,34);
+       BlockOMemory instance = new BlockOMemory(32,16,true,null,2);
+       BlockOMemory instance1 = new BlockOMemory(64,16,true,null,34);
         int expResult = 2;
         int result = instance.getProcessID();
         assertEquals(expResult, result);
@@ -249,23 +197,19 @@ public class BlockOMemoryTest {
         long size1 = 642342;
         long size2 = 122342348;
         
-        BlockOMemory instance = new BlockOMemory(32,16,true,1,2);
-        BlockOMemory instance1 = new BlockOMemory(32,16,true,4,3);
-        BlockOMemory instance2 = new BlockOMemory(32,16,true,3,5);
-        instance.setBuddy((int) size);
-        instance1.setBuddy((int) size1);
-        instance2.setBuddy((int) size2);
-        
+        BlockOMemory instance = new BlockOMemory(size,0,true,null,1);
+        BlockOMemory instance1 = new BlockOMemory(size1,0,true,null,2);
+        BlockOMemory instance2 = new BlockOMemory(size2,0,true,null,3);
         long expResult = size;
-        int result = instance.getBuddy();
+        long result = instance.getMemorySize();
         assertEquals(expResult, result );
         
         long expResult1 = size1;
-        int result1 = instance1.getBuddy();
+        long result1 = instance1.getMemorySize();
         assertEquals(expResult1, result1);
         
         long expResult2 = size2;
-        int result2 = instance2.getBuddy();
+        long result2 = instance2.getMemorySize();
         assertEquals(expResult2, result2);
         
     }
@@ -280,9 +224,9 @@ public class BlockOMemoryTest {
         int id1 = 64;
         int id2 = 65;
         
-        BlockOMemory instance = new BlockOMemory(32,16,true,1,2);
-        BlockOMemory instance1 = new BlockOMemory(32,16,true,4,3);
-        BlockOMemory instance2 = new BlockOMemory(32,16,true,3,5);
+        BlockOMemory instance = new BlockOMemory(32,16,true,null,2);
+        BlockOMemory instance1 = new BlockOMemory(32,16,true,null,3);
+        BlockOMemory instance2 = new BlockOMemory(32,16,true,null,5);
         instance.setProcessID(id);
         instance1.setProcessID(id1);
         instance2.setProcessID(id2);
@@ -308,13 +252,14 @@ public class BlockOMemoryTest {
         System.out.println("toString");
         
         
-        BlockOMemory instance = new BlockOMemory(32,16,true,1,2);
+        BlockOMemory instance = new BlockOMemory(32,16,true,null,2);
         
         /*String expResult = "BlockOMemory [memorySize=" + 32 + ", processSize="
 				+ "16.0" + ", haveProcess=" + true + ", processID="
 				+ 1 + ", buddy=" + 2 + "]";*/
-        String expResult = "BlockOMemory [memorySize=32, processSize=16.0, haveProcess=true, processID=2, buddy=1]";
+        String expResult = "BlockOMemory [memorySize=32, processSize=16.0, haveProcess=true, processID=2, parent=null]";
         String result = instance.toString();
+        System.out.println(result);
         assertEquals(expResult, result);
        
     }

@@ -14,8 +14,8 @@ public class BlockOMemory {
 	private boolean haveProcess;
 	// The process id
 	private int processID;
-	// the location in our array where this blocks buddy is located
-	private int buddy;
+	// reference to this buddies parent, analogous to a binary tree!
+	private BlockOMemory parent;
 
 	/**
 	 * The constructor to create a block of memory
@@ -32,31 +32,31 @@ public class BlockOMemory {
 	 *            The processes' ID
 	 */
 	public BlockOMemory(long memorySize, long processSize, boolean haveProcess,
-			int buddy, int processID) {
+			BlockOMemory parent, int processID) {
 		this.memorySize = memorySize;
 		this.processSize = processSize;
 		this.haveProcess = haveProcess;
 		this.processID = processID;
-		this.buddy = buddy;
+		this.parent = parent;
 	}
 
 	/**
-	 * Returns the buddy location
+	 * Returns the parent location
 	 * 
-	 * @return location of the buddy
+	 * @return reference to parent
 	 */
-	public int getBuddy() {
-		return buddy;
+	public BlockOMemory getParent() {
+		return parent;
 	}
 
 	/**
-	 * Sets the location of the block's buddy
+	 * Sets the location of the block's parent
 	 * 
-	 * @param newBuddy
-	 *            The location of the new buddy
+	 * @param newParent
+	 *            The location of the new parent
 	 */
-	public void setBuddy(int newBuddy) {
-		this.buddy = newBuddy;
+	public void setBuddy(BlockOMemory newParent) {
+		this.parent = newParent;
 	}
 
 	/**
@@ -142,6 +142,6 @@ public class BlockOMemory {
 	public String toString() {
 		return "BlockOMemory [memorySize=" + memorySize + ", processSize="
 				+ processSize + ", haveProcess=" + haveProcess + ", processID="
-				+ processID + ", buddy=" + buddy + "]";
+				+ processID + ", parent=null]";
 	}
 }

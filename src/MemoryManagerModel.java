@@ -46,7 +46,7 @@ public class MemoryManagerModel extends java.util.Observable{
 		processIDs = new HashMap<>();
 		memoryBlocks = new ArrayList<>();
 		// Add initial block of memory
-		memoryBlocks.add(new BlockOMemory(64, 0, false, NO_BUDDY, NO_PROCESS));
+		memoryBlocks.add(new BlockOMemory(64, 0, false, null, NO_PROCESS)); //null=No parent
 		freeMemory = new int[Functions.log2(maxMemorySize) + 1];
 		// Set freememory to maxMemory
 		freeMemory[freeMemory.length - 1] = 1;
@@ -95,6 +95,20 @@ public class MemoryManagerModel extends java.util.Observable{
 			notifyObservers(); //MVC, notify all observers
 		}
 	}
+	
+	private int findClosestPowerOf2(long processSize)
+	{
+		// finds power of 2 closest and >= processSize
+		int x;
+				if (Functions.isPowerOfTwo(processSize))
+				{
+					x = Functions.log2(processSize);
+				} else
+				{
+					x = Functions.log2(processSize) + 1;
+				}
+				return x;
+	}
 
 	/**
 	 *
@@ -107,16 +121,8 @@ public class MemoryManagerModel extends java.util.Observable{
 	{
 		boolean noSpaceAvailable = false;
 		processIDs.put(id, true);
-		int x = 0;
 		boolean sizeFound = false;
-		// finds power of 2 closest and >= processSize
-		if (Functions.isPowerOfTwo(processSize))
-		{
-			x = Functions.log2(processSize);
-		} else
-		{
-			x = Functions.log2(processSize) + 1;
-		}
+		int x = findClosestPowerOf2(processSize);
 		// uses that power of 2 to look in freememory array for available
 		// space
 		while (!sizeFound)
@@ -152,16 +158,25 @@ public class MemoryManagerModel extends java.util.Observable{
 						// Splits memory chunk in two if its large enough to
 						// allocate the process
 						long blockSize = memoryBlocks.get(i).getMemorySize();
-						memoryBlocks.add(i + 1, new BlockOMemory((blockSize / 2), 0, false, i,
-								NO_PROCESS));
-						memoryBlocks.get(i).setMemorySize(blockSize / 2);
-						memoryBlocks.get(i).setBuddy(i + 1);
+						BlockOMemory parent = memoryBlocks.get(i); //the new parent
+						//Remove the new parent from the array
+						memoryBlocks.remove(parent);
+						
+						//Block1 has a process in it
+						BlockOMemory block1 = new BlockOMemory((blockSize / 2), processSize, true, parent, id); 
+						//Block 2 does not have a process in it
+						BlockOMemory block2 = new BlockOMemory((blockSize / 2), processSize, false, parent, NO_PROCESS);
+						//Add the blocks into our array
+						memoryBlocks.add(i, block1);
+						memoryBlocks.add(i+1, block2);
+						System.out.println("MEM BLOCKS = " + memoryBlocks);
 						System.out.println("Split ran. Turned size " + blockSize
 								+ " into two blocks of size " + blockSize / 2);
 						freeMemory[x] -= 1;
 						x = x - 1;
 						freeMemory[x] += 2;
-
+						if (blockSize / 2 == findClosestPowerOf2(processSize))
+							return; //we have a perfect fit, don't search anymore
 					} else
 					{
 						// add in the new process
@@ -228,50 +243,43 @@ public class MemoryManagerModel extends java.util.Observable{
 			System.out.println("Process #" + process + " not found.");
 		}
 
-		mergeMemory(0);
+		mergeMemory();
 
 	}// end deallocate
 
+	
+	
 	/**
 	 * Finds two chunks of memory with no processes and are buddies. Puts the
-	 * two given chunks together to make a larger chunk.
+	 * two given chunks together to make a larger chunk using the parents as reference.
+	 * This process can be thought of as checking the children of a parent node in a binary tree
+	 * and if they are both free, to remove them both.
 	 * 
 	 * @author Ryan Smith
 	 * @param blockIndex
 	 */
-	private void mergeMemory(int blockIndex) {
-		boolean mergeDone = false;
-		while (blockIndex < memoryBlocks.size() - 1 && !mergeDone) {
-			// We will iterate through the array and check if the block and it's
-			// neighbor are "buddies", and both free (isProcess() == false).
-			// If so, we will merge them into 1 big block.
-			// If we do a merge, we will run this method again, in case there
-			// needs to be more merges performed.
-			BlockOMemory leftPiece = memoryBlocks.get(blockIndex);
-			BlockOMemory rightPiece = memoryBlocks.get(blockIndex + 1);
-			// Check if these processes are buddies
-			if (leftPiece.getMemorySize() == rightPiece.getMemorySize()
-					&& leftPiece.getBuddy() == blockIndex + 1
-					&& rightPiece.getBuddy() == blockIndex
-					&& !leftPiece.isProcess() && !rightPiece.isProcess()) {
-				// We know these two are buddies, so we must now perform a merge
-				int j = Functions.log2(memoryBlocks.get(blockIndex)
-						.getMemorySize());
-				leftPiece.setMemorySize(leftPiece.getMemorySize() * 2); //coalesce
-				memoryBlocks.remove(blockIndex + 1);
-				freeMemory[j] -= 2; //there are 2 less pieces of size 2^j
-				freeMemory[j + 1] += 1; //there is 1 more piece of size 2^(j+1)
-				System.out.println("Two blocks of size "
-						+ leftPiece.getMemorySize() / 2
-						+ " combined into one block of size "
-						+ leftPiece.getMemorySize());
-				// Update links
-				if (memoryBlocks.size() == 1)
-					leftPiece.setBuddy(NO_BUDDY);
-				mergeDone = true; //end while loop and repeat process
-				mergeMemory(blockIndex); // Run through the process again
+	private void mergeMemory() 
+	{
+		if (memoryBlocks.size() < 2)
+			return; //Do not even attempt a merge
+		for (int i = 0; i<memoryBlocks.size() - 1; i++)
+		{
+			BlockOMemory block = memoryBlocks.get(i);
+			BlockOMemory possibleBuddy = memoryBlocks.get(i + 1);
+			if (block.getParent() == possibleBuddy.getParent() && !block.isProcess() && !possibleBuddy.isProcess())
+			{
+				//They have the same parent and are both free, so coalesce!
+				memoryBlocks.remove(block);
+				memoryBlocks.remove(possibleBuddy);
+				memoryBlocks.add(i, block.getParent()); //insert the parent block at the ith location
+				int j = Functions.log2(block.getMemorySize()); //get the index in our freeMemory array for this block
+				freeMemory[j] = freeMemory[j] - 2; //there are 2 less blocks of this size 2^j
+				freeMemory[j+1]++; //there is 1 more of this higher block size 2^(j+1)
+				
+				//There might be a "chain" of coalescing that can be performed
+				//So since we performed a merge, we shall call the method again.
+				mergeMemory();
 			}
-			blockIndex++;
 		}
 	}
 

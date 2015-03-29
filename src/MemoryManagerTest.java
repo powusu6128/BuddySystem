@@ -265,6 +265,8 @@ public class MemoryManagerTest {
 	/**
 	 * Test of toString method, of class MemoryManagerModel.
 	 */
+	
+	/*
 	@Test
 	public void testToString() {
 		System.out.println("toString");
@@ -277,4 +279,5 @@ public class MemoryManagerTest {
 		System.out.println("RESULT = " + result);
 		assertEquals(expResult, result);
 	}
+	*/
 }
