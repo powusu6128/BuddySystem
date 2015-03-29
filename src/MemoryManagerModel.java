@@ -40,13 +40,9 @@ public class MemoryManagerModel extends java.util.Observable{
 			throw new IllegalArgumentException(
 					"The Min and Max Memory must be a power of 2");
 		}
-<<<<<<< Updated upstream
 		this.minMemorySize = minMemorySize;
 		this.maxMemorySize = maxMemorySize;
-=======
-		MemoryManagerModel.minMemorySize = minMemorySize;
-		MemoryManagerModel.maxMemorySize = maxMemorySize;
->>>>>>> Stashed changes
+
 		processIDs = new HashMap<>();
 		memoryBlocks = new ArrayList<>();
 		// Add initial block of memory
@@ -196,7 +192,7 @@ public class MemoryManagerModel extends java.util.Observable{
 	 */
 	public void deallocateMemory(int process)
 	{
-		deallocateMemory(process);
+		deallocateMemoryHelper(process);
 		notifyObservers();
 	}
 
