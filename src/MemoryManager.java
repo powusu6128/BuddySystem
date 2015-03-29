@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 /**
- * The Memory Management allows a maximium and minium memory size to be set Uses
+ * The Memory Management allows a maximum and minimum memory size to be set Uses
  * the Memory buddy system idea to allocate, deallocate, and merge memory
  * 
  * @author Tyler, Edward, Justin, Ryan
@@ -17,9 +17,9 @@ public class MemoryManager {
 	// array of free memory available. Uses 2 ^ index for easy access
 	private static int[] freeMemory;
 	// minimum memory size allowed
-	private static long minMemorySize;
+	private  long minMemorySize;
 	// size of the total starting memory
-	private static long maxMemorySize;
+	private  long maxMemorySize;
 	// no buddy value for BlockOMemory
 	private static final int NO_BUDDY = -1;
 	// no process value for BlockOMemory
@@ -40,8 +40,8 @@ public class MemoryManager {
 			throw new IllegalArgumentException(
 					"The Min and Max Memory must be a power of 2");
 		}
-		MemoryManager.minMemorySize = minMemorySize;
-		MemoryManager.maxMemorySize = maxMemorySize;
+		this.minMemorySize = minMemorySize;
+		this.maxMemorySize = maxMemorySize;
 		processIDs = new HashMap<>();
 		memoryBlocks = new ArrayList<>();
 		// Add initial block of memory
@@ -56,7 +56,7 @@ public class MemoryManager {
 	 * 
 	 * @return minMemorySize
 	 */
-	public static double getMinMemorySize() {
+	public double getMinMemorySize() {
 		return minMemorySize;
 	}
 
@@ -65,7 +65,7 @@ public class MemoryManager {
 	 * 
 	 * @return maxMemorySize
 	 */
-	public static double getMaxMemorySize() {
+	public double getMaxMemorySize() {
 		return maxMemorySize;
 	}
 
@@ -250,7 +250,7 @@ public class MemoryManager {
 	 * 
 	 * @return ArrayList of memory blocks
 	 */
-	public static ArrayList<BlockOMemory> getMemoryBlocks() {
+	public  ArrayList<BlockOMemory> getMemoryBlocks() {
 		return memoryBlocks;
 	}
 
@@ -259,7 +259,7 @@ public class MemoryManager {
 	 * 
 	 * @return map of process IDs
 	 */
-	public static HashMap<Integer, Boolean> getProcessIDs() {
+	public HashMap<Integer, Boolean> getProcessIDs() {
 		return processIDs;
 	}
 
@@ -268,7 +268,7 @@ public class MemoryManager {
 	 * 
 	 * @return free memory
 	 */
-	public static int[] getFreeMemory() {
+	public int[] getFreeMemory() {
 		return freeMemory;
 	}
 
@@ -277,7 +277,7 @@ public class MemoryManager {
 	 */
 	@Override
 	public String toString() {
-		String s = "MemoryManage [minMemory=" + minMemorySize + ", maxMemory="
+		String s = "MemoryManager [minMemory=" + minMemorySize + ", maxMemory="
 				+ maxMemorySize + ", FreeMemory={"
 				+ Arrays.toString(freeMemory) + ",\nMemoryBlocks=\n{";
 		int i = 0;
