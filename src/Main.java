@@ -2,14 +2,15 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 /**
- * Controller used to talk to GUI
+ * Controller used to talk to GUI.
+ * In a Swing based GUI, the controller will typically contain a JFrame.
  *
  */
-public class Main {
+public class Main  {
 
 	public static void main(String[] args) {
 		BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
-		MemoryManager m = new MemoryManager(1, 64);
+		MemoryManagerModel m = new MemoryManagerModel(1, 64);
 		m.allocateMemory(7, 5);
 		m.allocateMemory(7, 5);
 		m.allocateMemory(7, 6);

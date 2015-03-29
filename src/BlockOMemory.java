@@ -1,5 +1,5 @@
 /**
- * Represents each process' needed memory for the {@link MemoryManager}
+ * Represents each process' needed memory for the {@link MemoryManagerModel}
  * 
  * @author Tyler Andjel
  *
