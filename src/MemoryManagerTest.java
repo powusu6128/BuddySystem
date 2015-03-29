@@ -6,189 +6,274 @@
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
 import static org.junit.Assert.*;
 
 /**
- *
+ * MemoryManager Class JUnit Tests
+ * 
  * @author Justin Hyland
  */
 public class MemoryManagerTest {
-    
-    public MemoryManagerTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
 
-    /**
-     * Test of getMinMemorySize method, of class MemoryManager.
-     */
-    @Test
-    public void testGetMinMemorySize() {
-        System.out.println("getMinMemorySize");
-        
-        MemoryManager memory = new MemoryManager(0, 1024);
-                 
-        double expResult = 0;
-        double result = memory.getMinMemorySize();
-        assertEquals(expResult, result, 0.000000001);
-       
-        
-    }
+	public MemoryManagerTest() {
+	}
 
-    /**
-     * Test of getMaxMemorySize method, of class MemoryManager.
-     */
-    @Test
-    public void testGetMaxMemorySize() {
-        System.out.println("getMaxMemorySize");
-       MemoryManager memory = new MemoryManager(2, 1024);
-        double expResult = 1024;
-        double result = memory.getMaxMemorySize();
-        assertEquals(expResult, result, 0.000000001);
-       
-    }
+	@BeforeClass
+	public static void setUpClass() {
+	}
 
-    /**
-     * Test of allocateMemory method, of class MemoryManager.
-     */
-    @Test
-    public void testAllocateMemory() {
-        System.out.println("allocateMemory");
-   
-        MemoryManager instance = new MemoryManager(1,64);
-        instance.allocateMemory(7, 5);
-        System.out.println(instance.toString());
-        instance.allocateMemory(7, 5);
-        System.out.println(instance.toString());
-        instance.allocateMemory(7, 6);
-        System.out.println(instance.toString());
-        instance.allocateMemory(30, 11);
-        
-        instance.allocateMemory(65, 3);
-        
-        
-        int expected = 1;
-        int[] result = instance.getFreeMemory();
-        
-        
-//        int expected1 = 0;
-//        int result1 = 0;
-//        
-//        int expected2 = 0;
-//        int result2 = 0;
-//        
-//        int expected3 = 0;
-//        int result3 = 0;
-        
-        assertEquals(expected,result[4]);
-//        assertEquals(expected,result);
-//        assertEquals(expected,result);
-//        assertEquals(expected,result);
-//        
-        System.out.println(instance.toString());
-        
-        
-        
-     
-    }
+	@AfterClass
+	public static void tearDownClass() {
+	}
 
-    /**
-     * Test of deallocateMemory method, of class MemoryManager.
-     */
-    @Test
-    public void testDeallocateMemory() {
-        System.out.println("deallocateMemory");
-        
-        MemoryManager instance = new MemoryManager(1,64);
-	instance.allocateMemory(32, 4);
-	instance.allocateMemory(16, 9);
-	instance.allocateMemory(32, 56);
-        instance.allocateMemory(2, 89);
-        instance.deallocateMemory(89);
-        System.out.println(instance.toString());
-        instance.deallocateMemory(56);
-        System.out.println(instance.toString());
-        instance.deallocateMemory(9);
-        System.out.println(instance.toString());
-        instance.deallocateMemory(4);
-        System.out.println(instance.toString());
-    }
+	@Before
+	public void setUp() {
+	}
 
-    /**
-     * Test of getMemoryBlocks method, of class MemoryManager.
-     */
-    @Test
-    public void testGetMemoryBlocks() {
-        System.out.println("getMemoryBlocks");
+	@After
+	public void tearDown() {
+	}
 
-        ArrayList<BlockOMemory> result = MemoryManager.getMemoryBlocks();
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
 
-        MemoryManager memory = new MemoryManager(1, 64);
-       
-        
-       // ArrayList<BlockOMemory> expResult = 
-         //       assertEquals(expResult, result);
+	/**
+	 * Test exception on constructor, of class MemoryManager
+	 */
+	@Test
+	public void testExceptionConstructor() {
+		System.out.println("ExceptionConstructor");
+		exception.expect(IllegalArgumentException.class);
+		// Max is not a power of 2
+		new MemoryManager(2, 65);
+		// Min is not a power of 2
+		new MemoryManager(3, 64);
+		//Both min and max is not a power of 2
+		new MemoryManager(3, 65);
+	}
+	
+	/**
+	 * Test of getMinMemorySize method, of class MemoryManager.
+	 */
+	@Test
+	public void testGetMinMemorySize() {
+		System.out.println("getMinMemorySize");
 
-    }
+		MemoryManager memory = new MemoryManager(0, 1024);
 
-    /**
-     * Test of getProcessIDs method, of class MemoryManager.
-     */
-    @Test
-    public void testGetProcessIDs() {
-        System.out.println("getProcessIDs");
-        MemoryManager memory = new MemoryManager(1,64);
-       //HashMap<Integer, Boolean> expResult =  
-       //HashMap<Integer, Boolean> result = memory.getProcessIDs();
-       //assertEquals(expResult, result);
-        
-    }
+		double expResult = 0;
+		double result = memory.getMinMemorySize();
+		assertEquals(expResult, result, 0.000000001);
 
-    /**
-     * Test of getFreeMemory method, of class MemoryManager.
-     */
-    @Test
-    public void testGetFreeMemory() {
-        System.out.println("getFreeMemory");
+	}
 
-        MemoryManager memory = new MemoryManager(1, 64);
+	/**
+	 * Test of getMaxMemorySize method, of class MemoryManager.
+	 */
+	@Test
+	public void testGetMaxMemorySize() {
+		System.out.println("getMaxMemorySize");
+		MemoryManager memory = new MemoryManager(2, 1024);
+		double expResult = 1024;
+		double result = memory.getMaxMemorySize();
+		assertEquals(expResult, result, 0.000000001);
 
-        int expResultLength = 7;
-        int result = memory.getFreeMemory().length;
-        assertEquals(expResultLength, result);
-        
-        
-    }
-    /**
-     * Test of toString method, of class MemoryManager.
-     */
-    @Test
-    public void testToString() {
-        System.out.println("toString");
-        MemoryManager instance = new MemoryManager(1,64);
-        String expResult = "";
-        String result = instance.toString();
-        assertEquals(expResult, result);
-      
-    }
-    
+	}
+
+	/**
+	 * Test of allocateMemory method, of class MemoryManager.
+	 */
+	@Test
+	public void testAllocateMemory() {
+		System.out.println("allocateMemory");
+
+		MemoryManager instance = new MemoryManager(1, 64);
+		int[] expected = { 0, 0, 0, 0, 0, 0, 1 };
+		int[] result = instance.getFreeMemory();
+		for (int i = 0; i < result.length; i++) {
+			assertEquals(expected[i], result[i]);
+		}
+
+		instance.allocateMemory(7, 5);
+		int[] expected2 = { 0, 0, 0, 1, 1, 1, 0 };
+		int[] result2 = instance.getFreeMemory();
+		for (int i = 0; i < result2.length; i++) {
+			assertEquals(expected2[i], result2[i]);
+		}
+
+		instance.allocateMemory(7, 5);
+		int[] expected3 = { 0, 0, 0, 1, 1, 1, 0 };
+		int[] result3 = instance.getFreeMemory();
+		for (int i = 0; i < result3.length; i++) {
+			assertEquals(expected3[i], result3[i]);
+		}
+
+		instance.allocateMemory(7, 6);
+		int[] expected4 = { 0, 0, 0, 0, 1, 1, 0 };
+		int[] result4 = instance.getFreeMemory();
+		for (int i = 0; i < result4.length; i++) {
+			assertEquals(expected4[i], result4[i]);
+		}
+
+		instance.allocateMemory(30, 11);
+		int[] expected5 = { 0, 0, 0, 0, 1, 0, 0 };
+		int[] result5 = instance.getFreeMemory();
+		for (int i = 0; i < result5.length; i++) {
+			assertEquals(expected5[i], result5[i]);
+		}
+
+		instance.allocateMemory(65, 3);
+		int[] expected6 = { 0, 0, 0, 0, 1, 0, 0 };
+		int[] result6 = instance.getFreeMemory();
+		for (int i = 0; i < result6.length; i++) {
+			assertEquals(expected6[i], result6[i]);
+		}
+	}
+
+	/**
+	 * Test of deallocateMemory method, of class MemoryManager.
+	 */
+	@Test
+	public void testDeallocateMemory() {
+		System.out.println("deallocateMemory");
+
+		MemoryManager instance = new MemoryManager(1, 64);
+		System.out.println(instance);
+		instance.allocateMemory(8, 4);
+		instance.allocateMemory(16, 9);
+		instance.allocateMemory(9, 56);
+		instance.allocateMemory(2, 89);
+		instance.allocateMemory(15, 99);
+
+		System.out.println(instance);
+		int[] expected = { 0, 1, 1, 0, 0, 0, 0 };
+		int[] result = instance.getFreeMemory();
+		for (int i = 0; i < result.length; i++) {
+			assertEquals(expected[i], result[i]);
+		}
+		
+		instance.deallocateMemory(89);
+		System.out.println(instance);
+		int[] expected2 = { 0, 0, 0, 1, 0, 0, 0 };
+		int[] result2 = instance.getFreeMemory();
+		for (int i = 0; i < result2.length; i++) {
+			assertEquals(expected2[i], result2[i]);
+		}
+		
+		instance.deallocateMemory(4);
+		System.out.println(instance);
+		int[] expected7 = { 0, 0, 0, 0, 1, 0, 0 };
+		int[] result7 = instance.getFreeMemory();
+		for (int i = 0; i < result7.length; i++) {
+			assertEquals(expected7[i], result7[i]);
+		}
+
+		instance.deallocateMemory(56);
+		System.out.println(instance);
+		int[] expected3 = { 0, 0, 0, 0, 2, 0, 0 };
+		int[] result3 = instance.getFreeMemory();
+		for (int i = 0; i < result3.length; i++) {
+			assertEquals(expected3[i], result3[i]);
+		}
+		
+		instance.deallocateMemory(56);
+		System.out.println(instance);
+		int[] expected4 = { 0, 0, 0, 0, 2, 0, 0 };
+		int[] result4 = instance.getFreeMemory();
+		for (int i = 0; i < result4.length; i++) {
+			assertEquals(expected4[i], result4[i]);
+		}
+		
+		instance.deallocateMemory(9);
+		System.out.println(instance);
+		int[] expected5 = { 0, 0, 0, 1, 1, 0, 0 };
+		int[] result5 = instance.getFreeMemory();
+		for (int i = 0; i < result5.length; i++) {
+			assertEquals(expected5[i], result5[i]);
+		}
+		
+		instance.deallocateMemory(99);
+		System.out.println(instance);
+		int[] expected6 = { 0, 0, 0, 0, 0, 0, 1 };
+		int[] result6 = instance.getFreeMemory();
+		for (int i = 0; i < result6.length; i++) {
+			assertEquals(expected6[i], result6[i]);
+		}
+	}
+
+	/**
+	 * Test of getMemoryBlocks method, of class MemoryManager.
+	 */
+	@Test
+	public void testGetMemoryBlocks() {
+		System.out.println("getMemoryBlocks");
+		MemoryManager memory = new MemoryManager(1, 64);
+		ArrayList<BlockOMemory> result = memory.getMemoryBlocks();
+		memory.allocateMemory(32, 9);
+		int expResult = 2;
+		assertEquals(expResult, result.size());
+		memory.allocateMemory(4, 5);
+		expResult = 5;
+		result = memory.getMemoryBlocks();
+		assertEquals(expResult, result.size());
+		memory.deallocateMemory(5);
+		expResult = 2;
+		result = memory.getMemoryBlocks();
+		assertEquals(expResult, result.size());
+	}
+
+	/**
+	 * Test of getProcessIDs method, of class MemoryManager.
+	 */
+	@Test
+	public void testGetProcessIDs() {
+		System.out.println("getProcessIDs");
+		MemoryManager memory = new MemoryManager(1, 64);
+		memory.allocateMemory(32, 55);
+		HashMap<Integer, Boolean> expResult = new HashMap<>();
+		expResult.put(55, true);
+		HashMap<Integer, Boolean> result = memory.getProcessIDs();
+		assertEquals(expResult, result);
+		memory.allocateMemory(16, 99);
+		expResult.put(99, true);
+		assertEquals(expResult, result);
+	}
+
+	/**
+	 * Test of getFreeMemory method, of class MemoryManager.
+	 */
+	@Test
+	public void testGetFreeMemory() {
+		System.out.println("getFreeMemory");
+
+		MemoryManager memory = new MemoryManager(1, 64);
+
+		int expResultLength = 7;
+		int result = memory.getFreeMemory().length;
+		assertEquals(expResultLength, result);
+	}
+
+	/**
+	 * Test of toString method, of class MemoryManager.
+	 */
+	@Test
+	public void testToString() {
+		System.out.println("toString");
+		MemoryManager instance = new MemoryManager(1, 64);
+		String expResult = "MemoryManager [minMemory=1, maxMemory=64, FreeMemory={[0, 0, 0, 0, 0, 0, 1],\n"
+				+ "MemoryBlocks=\n"
+				+ "{Index 0: BlockOMemory [memorySize=64, processSize=0.0, haveProcess=false, processID=-1, buddy=-1],\n"
+				+ "}]";
+		String result = instance.toString();
+		assertEquals(expResult, result);
+	}
 }

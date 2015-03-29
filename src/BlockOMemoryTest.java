@@ -12,7 +12,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * BlockOMemory Class JUnit Tests
+ * 
  * @author Justin Hyland
  */
 public class BlockOMemoryTest {
@@ -309,10 +310,10 @@ public class BlockOMemoryTest {
         
         BlockOMemory instance = new BlockOMemory(32,16,true,1,2);
         
-        
-        String expResult = "BlockOMemory [memorySize=" + 32 + ", processSize="
-				+ 16 + ", haveProcess=" + true + ", processID="
-				+ 1 + ", buddy=" + 2 + "]";
+        /*String expResult = "BlockOMemory [memorySize=" + 32 + ", processSize="
+				+ "16.0" + ", haveProcess=" + true + ", processID="
+				+ 1 + ", buddy=" + 2 + "]";*/
+        String expResult = "BlockOMemory [memorySize=32, processSize=16.0, haveProcess=true, processID=2, buddy=1]";
         String result = instance.toString();
         assertEquals(expResult, result);
        
