@@ -18,7 +18,7 @@ import org.junit.rules.ExpectedException;
 import static org.junit.Assert.*;
 
 /**
- * MemoryManager Class JUnit Tests
+ * MemoryManagerModel Class JUnit Tests
  * 
  * @author Justin Hyland
  */
@@ -47,28 +47,28 @@ public class MemoryManagerTest {
 	public ExpectedException exception = ExpectedException.none();
 
 	/**
-	 * Test exception on constructor, of class MemoryManager
+	 * Test exception on constructor, of class MemoryManagerModel
 	 */
 	@Test
 	public void testExceptionConstructor() {
 		System.out.println("ExceptionConstructor");
 		exception.expect(IllegalArgumentException.class);
 		// Max is not a power of 2
-		new MemoryManager(2, 65);
+		new MemoryManagerModel(2, 65);
 		// Min is not a power of 2
-		new MemoryManager(3, 64);
+		new MemoryManagerModel(3, 64);
 		//Both min and max is not a power of 2
-		new MemoryManager(3, 65);
+		new MemoryManagerModel(3, 65);
 	}
 	
 	/**
-	 * Test of getMinMemorySize method, of class MemoryManager.
+	 * Test of getMinMemorySize method, of class MemoryManagerModel.
 	 */
 	@Test
 	public void testGetMinMemorySize() {
 		System.out.println("getMinMemorySize");
 
-		MemoryManager memory = new MemoryManager(0, 1024);
+		MemoryManagerModel memory = new MemoryManagerModel(0, 1024);
 
 		double expResult = 0;
 		double result = memory.getMinMemorySize();
@@ -77,12 +77,12 @@ public class MemoryManagerTest {
 	}
 
 	/**
-	 * Test of getMaxMemorySize method, of class MemoryManager.
+	 * Test of getMaxMemorySize method, of class MemoryManagerModel.
 	 */
 	@Test
 	public void testGetMaxMemorySize() {
 		System.out.println("getMaxMemorySize");
-		MemoryManager memory = new MemoryManager(2, 1024);
+		MemoryManagerModel memory = new MemoryManagerModel(2, 1024);
 		double expResult = 1024;
 		double result = memory.getMaxMemorySize();
 		assertEquals(expResult, result, 0.000000001);
@@ -90,13 +90,13 @@ public class MemoryManagerTest {
 	}
 
 	/**
-	 * Test of allocateMemory method, of class MemoryManager.
+	 * Test of allocateMemory method, of class MemoryManagerModel.
 	 */
 	@Test
 	public void testAllocateMemory() {
 		System.out.println("allocateMemory");
 
-		MemoryManager instance = new MemoryManager(1, 64);
+		MemoryManagerModel instance = new MemoryManagerModel(1, 64);
 		int[] expected = { 0, 0, 0, 0, 0, 0, 1 };
 		int[] result = instance.getFreeMemory();
 		for (int i = 0; i < result.length; i++) {
@@ -140,13 +140,13 @@ public class MemoryManagerTest {
 	}
 
 	/**
-	 * Test of deallocateMemory method, of class MemoryManager.
+	 * Test of deallocateMemory method, of class MemoryManagerModel.
 	 */
 	@Test
 	public void testDeallocateMemory() {
 		System.out.println("deallocateMemory");
 
-		MemoryManager instance = new MemoryManager(1, 64);
+		MemoryManagerModel instance = new MemoryManagerModel(1, 64);
 		System.out.println(instance);
 		instance.allocateMemory(8, 4);
 		instance.allocateMemory(16, 9);
@@ -211,12 +211,12 @@ public class MemoryManagerTest {
 	}
 
 	/**
-	 * Test of getMemoryBlocks method, of class MemoryManager.
+	 * Test of getMemoryBlocks method, of class MemoryManagerModel.
 	 */
 	@Test
 	public void testGetMemoryBlocks() {
 		System.out.println("getMemoryBlocks");
-		MemoryManager memory = new MemoryManager(1, 64);
+		MemoryManagerModel memory = new MemoryManagerModel(1, 64);
 		ArrayList<BlockOMemory> result = memory.getMemoryBlocks();
 		memory.allocateMemory(32, 9);
 		int expResult = 2;
@@ -232,12 +232,12 @@ public class MemoryManagerTest {
 	}
 
 	/**
-	 * Test of getProcessIDs method, of class MemoryManager.
+	 * Test of getProcessIDs method, of class MemoryManagerModel.
 	 */
 	@Test
 	public void testGetProcessIDs() {
 		System.out.println("getProcessIDs");
-		MemoryManager memory = new MemoryManager(1, 64);
+		MemoryManagerModel memory = new MemoryManagerModel(1, 64);
 		memory.allocateMemory(32, 55);
 		HashMap<Integer, Boolean> expResult = new HashMap<>();
 		expResult.put(55, true);
@@ -249,13 +249,13 @@ public class MemoryManagerTest {
 	}
 
 	/**
-	 * Test of getFreeMemory method, of class MemoryManager.
+	 * Test of getFreeMemory method, of class MemoryManagerModel.
 	 */
 	@Test
 	public void testGetFreeMemory() {
 		System.out.println("getFreeMemory");
 
-		MemoryManager memory = new MemoryManager(1, 64);
+		MemoryManagerModel memory = new MemoryManagerModel(1, 64);
 
 		int expResultLength = 7;
 		int result = memory.getFreeMemory().length;
@@ -263,17 +263,18 @@ public class MemoryManagerTest {
 	}
 
 	/**
-	 * Test of toString method, of class MemoryManager.
+	 * Test of toString method, of class MemoryManagerModel.
 	 */
 	@Test
 	public void testToString() {
 		System.out.println("toString");
-		MemoryManager instance = new MemoryManager(1, 64);
+		MemoryManagerModel instance = new MemoryManagerModel(1, 64);
 		String expResult = "MemoryManager [minMemory=1, maxMemory=64, FreeMemory={[0, 0, 0, 0, 0, 0, 1],\n"
 				+ "MemoryBlocks=\n"
 				+ "{Index 0: BlockOMemory [memorySize=64, processSize=0.0, haveProcess=false, processID=-1, buddy=-1],\n"
 				+ "}]";
 		String result = instance.toString();
+		System.out.println("RESULT = " + result);
 		assertEquals(expResult, result);
 	}
 }

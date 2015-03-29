@@ -50,25 +50,21 @@ public class FunctionsTest {
 		long number2 = 53;
 		long number3 = 64;
 
-		Functions instance = new Functions();
-		Functions instance1 = new Functions();
-		Functions instance2 = new Functions();
-		Functions instance3 = new Functions();
 
 		boolean expResult = true;
-		boolean result = instance.isPowerOfTwo(number);
+		boolean result = Functions.isPowerOfTwo(number);
 		assertEquals(expResult, result);
 
 		boolean expResult1 = false;
-		boolean result1 = instance1.isPowerOfTwo(number1);
+		boolean result1 = Functions.isPowerOfTwo(number1);
 		assertEquals(expResult1, result1);
 
 		boolean expResult2 = false;
-		boolean result2 = instance2.isPowerOfTwo(number2);
+		boolean result2 = Functions.isPowerOfTwo(number2);
 		assertEquals(expResult2, result2);
 
 		boolean expResult3 = true;
-		boolean result3 = instance3.isPowerOfTwo(number3);
+		boolean result3 = Functions.isPowerOfTwo(number3);
 		assertEquals(expResult3, result3);
 
 	}
@@ -83,20 +79,16 @@ public class FunctionsTest {
 		long num1 = 64;
 		long num2 = 256;
 
-		Functions instance = new Functions();
-		Functions instance1 = new Functions();
-		Functions instance2 = new Functions();
-
 		int expResult = 10;
-		int result = instance.log2(num);
+		int result = Functions.log2(num);
 		assertEquals(expResult, result);
 
 		int expResult1 = 6;
-		int result1 = instance1.log2(num1);
+		int result1 = Functions.log2(num1);
 		assertEquals(expResult1, result1);
 
 		int expResult2 = 8;
-		int result2 = instance2.log2(num2);
+		int result2 = Functions.log2(num2);
 		assertEquals(expResult2, result2);
 
 	}
@@ -112,8 +104,7 @@ public class FunctionsTest {
 		System.out.println("Exception");
 		exception.expect(IllegalArgumentException.class);
 		long num3 = -1;
-		Functions instance3 = new Functions();
-		instance3.isPowerOfTwo(num3);
+		Functions.isPowerOfTwo(num3);
 
 	}
 
