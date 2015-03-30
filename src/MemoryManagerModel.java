@@ -162,7 +162,7 @@ public class MemoryManagerModel extends java.util.Observable{
 						memoryBlocks.remove(parent);
 						
 						//Block1 has a process in it
-						BlockOMemory block1 = new BlockOMemory((blockSize / 2), processSize, false, parent, id); 
+						BlockOMemory block1 = new BlockOMemory((blockSize / 2), processSize, false, parent, NO_PROCESS); 
 						//Block 2 does not have a process in it
 						BlockOMemory block2 = new BlockOMemory((blockSize / 2), processSize, false, parent, NO_PROCESS);
 						//Add the blocks into our array
@@ -271,7 +271,9 @@ public class MemoryManagerModel extends java.util.Observable{
 				//They have the same parent and are both free, so coalesce!
 				memoryBlocks.remove(block);
 				memoryBlocks.remove(possibleBuddy);
+				block.getParent().setProcessSize(0.0);
 				memoryBlocks.add(i, block.getParent()); //insert the parent block at the ith location
+				
 				int j = Functions.log2(block.getMemorySize()); //get the index in our freeMemory array for this block
 				freeMemory[j] = freeMemory[j] - 2; //there are 2 less blocks of this size 2^j
 				freeMemory[j+1]++; //there is 1 more of this higher block size 2^(j+1)

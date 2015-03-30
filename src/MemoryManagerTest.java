@@ -195,7 +195,7 @@ public class MemoryManagerTest {
 		
 		instance.deallocateMemory(9);
 		System.out.println(instance);
-		int[] expected5 = { 0, 0, 0, 1, 1, 0, 0 };
+		int[] expected5 = { 0, 0, 0, 0, 1, 1, 0 };
 		int[] result5 = instance.getFreeMemory();
 		for (int i = 0; i < result5.length; i++) {
 			assertEquals(expected5[i], result5[i]);
