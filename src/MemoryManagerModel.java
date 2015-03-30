@@ -120,7 +120,6 @@ public class MemoryManagerModel extends java.util.Observable{
 	private void allocateMemoryHelper(long processSize, int id)
 	{
 		boolean noSpaceAvailable = false;
-		processIDs.put(id, true);
 		boolean sizeFound = false;
 		int x = findClosestPowerOf2(processSize);
 		// uses that power of 2 to look in freememory array for available
@@ -163,7 +162,7 @@ public class MemoryManagerModel extends java.util.Observable{
 						memoryBlocks.remove(parent);
 						
 						//Block1 has a process in it
-						BlockOMemory block1 = new BlockOMemory((blockSize / 2), processSize, true, parent, id); 
+						BlockOMemory block1 = new BlockOMemory((blockSize / 2), processSize, false, parent, id); 
 						//Block 2 does not have a process in it
 						BlockOMemory block2 = new BlockOMemory((blockSize / 2), processSize, false, parent, NO_PROCESS);
 						//Add the blocks into our array
@@ -175,12 +174,13 @@ public class MemoryManagerModel extends java.util.Observable{
 						freeMemory[x] -= 1;
 						x = x - 1;
 						freeMemory[x] += 2;
-						if (blockSize / 2 == findClosestPowerOf2(processSize))
-							return; //we have a perfect fit, don't search anymore
+						//if (blockSize / 2 == findClosestPowerOf2(processSize))
+						//	return; //we have a perfect fit, don't search anymore
 					} else
 					{
 						// add in the new process
 						memoryFound = true;
+						processIDs.put(id, true);
 						memoryBlocks.get(i).setProcessSize(processSize);
 						memoryBlocks.get(i).setIsProcess(true);
 						memoryBlocks.get(i).setProcessID(id);

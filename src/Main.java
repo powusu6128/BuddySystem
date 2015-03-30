@@ -11,20 +11,15 @@ public class Main  {
 	public static void main(String[] args) {
 		BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
 		MemoryManagerModel m = new MemoryManagerModel(1, 64);
-		m.allocateMemory(7, 5);
-		m.allocateMemory(7, 5);
-		m.allocateMemory(7, 6);
-		m.allocateMemory(30, 11);
-		m.deallocateMemory(5);
-		m.deallocateMemory(5);
-		m.deallocateMemory(11);
-		m.deallocateMemory(6);
-		m.allocateMemory(65, 3);
-		m.allocateMemory(32, 4);
-		m.allocateMemory(16, 9);
-		m.allocateMemory(32, 56);
-		m.allocateMemory(2, 89);
-		m.deallocateMemory(89);
+		m.allocateMemory(32, 1);
+		m.allocateMemory(16, 2);
+		m.allocateMemory(8, 3);
+		m.allocateMemory(8, 4);
+		m.deallocateMemory(4);
+		//m.deallocateMemory(3);
+		//m.allocateMemory(7, 1);
+		//m.allocateMemory(7, 2);
+		//m.allocateMemory(7, 3);
 		System.out.println("Printing array of memory.");
 		System.out.println(m);
 	}
