@@ -154,7 +154,6 @@ public class MemoryManagerTest {
 		instance.allocateMemory(2, 89);
 		instance.allocateMemory(15, 99);
 
-		System.out.println(instance);
 		int[] expected = { 0, 1, 1, 0, 0, 0, 0 };
 		int[] result = instance.getFreeMemory();
 		for (int i = 0; i < result.length; i++) {
@@ -162,7 +161,6 @@ public class MemoryManagerTest {
 		}
 		
 		instance.deallocateMemory(89);
-		System.out.println(instance);
 		int[] expected2 = { 0, 0, 0, 1, 0, 0, 0 };
 		int[] result2 = instance.getFreeMemory();
 		for (int i = 0; i < result2.length; i++) {
@@ -170,7 +168,6 @@ public class MemoryManagerTest {
 		}
 		
 		instance.deallocateMemory(4);
-		System.out.println(instance);
 		int[] expected7 = { 0, 0, 0, 0, 1, 0, 0 };
 		int[] result7 = instance.getFreeMemory();
 		for (int i = 0; i < result7.length; i++) {
@@ -178,7 +175,6 @@ public class MemoryManagerTest {
 		}
 
 		instance.deallocateMemory(56);
-		System.out.println(instance);
 		int[] expected3 = { 0, 0, 0, 0, 2, 0, 0 };
 		int[] result3 = instance.getFreeMemory();
 		for (int i = 0; i < result3.length; i++) {
@@ -186,7 +182,6 @@ public class MemoryManagerTest {
 		}
 		
 		instance.deallocateMemory(56);
-		System.out.println(instance);
 		int[] expected4 = { 0, 0, 0, 0, 2, 0, 0 };
 		int[] result4 = instance.getFreeMemory();
 		for (int i = 0; i < result4.length; i++) {
@@ -194,7 +189,6 @@ public class MemoryManagerTest {
 		}
 		
 		instance.deallocateMemory(9);
-		System.out.println(instance);
 		int[] expected5 = { 0, 0, 0, 0, 1, 1, 0 };
 		int[] result5 = instance.getFreeMemory();
 		for (int i = 0; i < result5.length; i++) {
@@ -202,7 +196,6 @@ public class MemoryManagerTest {
 		}
 		
 		instance.deallocateMemory(99);
-		System.out.println(instance);
 		int[] expected6 = { 0, 0, 0, 0, 0, 0, 1 };
 		int[] result6 = instance.getFreeMemory();
 		for (int i = 0; i < result6.length; i++) {
@@ -265,19 +258,16 @@ public class MemoryManagerTest {
 	/**
 	 * Test of toString method, of class MemoryManagerModel.
 	 */
-	
-	/*
 	@Test
 	public void testToString() {
 		System.out.println("toString");
 		MemoryManagerModel instance = new MemoryManagerModel(1, 64);
 		String expResult = "MemoryManager [minMemory=1, maxMemory=64, FreeMemory={[0, 0, 0, 0, 0, 0, 1],\n"
 				+ "MemoryBlocks=\n"
-				+ "{Index 0: BlockOMemory [memorySize=64, processSize=0.0, haveProcess=false, processID=-1, buddy=-1],\n"
+				+ "{Index 0: BlockOMemory [memorySize=64, processSize=0.0, haveProcess=false, processID=-1, parent=null],\n"
 				+ "}]";
 		String result = instance.toString();
 		System.out.println("RESULT = " + result);
 		assertEquals(expResult, result);
 	}
-	*/
 }
