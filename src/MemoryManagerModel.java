@@ -20,8 +20,6 @@ public class MemoryManagerModel extends java.util.Observable{
 	private  long minMemorySize;
 	// size of the total starting memory
 	private  long maxMemorySize;
-	// no buddy value for BlockOMemory
-	private static final int NO_BUDDY = -1;
 	// no process value for BlockOMemory
 	private static final int NO_PROCESS = -1;
 
@@ -46,7 +44,7 @@ public class MemoryManagerModel extends java.util.Observable{
 		processIDs = new HashMap<>();
 		memoryBlocks = new ArrayList<>();
 		// Add initial block of memory
-		memoryBlocks.add(new BlockOMemory(64, 0, false, null, NO_PROCESS)); //null=No parent
+		memoryBlocks.add(new BlockOMemory(maxMemorySize, 0, false, null, NO_PROCESS)); //null=No parent
 		freeMemory = new int[Functions.log2(maxMemorySize) + 1];
 		// Set freememory to maxMemory
 		freeMemory[freeMemory.length - 1] = 1;
@@ -84,7 +82,7 @@ public class MemoryManagerModel extends java.util.Observable{
 				+ processSize);
 		if (processSize < minMemorySize)
 			System.out.println("Process size less than minimum size allowed.");
-		else if (processSize > (maxMemorySize / 2))
+		else if (processSize > (maxMemorySize))
 			System.out
 					.println("Process size greater than maximum size allowed");
 		else if (processIDs.containsKey(id))
