@@ -1,3 +1,5 @@
+package com.model;
+
 /**
  * Represents each process' needed memory for the {@link MemoryManagerModel}
  * 

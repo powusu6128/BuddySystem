@@ -1,3 +1,4 @@
+package com.tests;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -14,6 +15,9 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import com.model.BlockOMemory;
+import com.model.MemoryManagerModel;
 
 import static org.junit.Assert.*;
 

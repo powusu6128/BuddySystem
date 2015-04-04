@@ -1,6 +1,9 @@
+package com.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+
+import ImportantFunctions.Functions;
 
 /**
  * The Memory Management allows a maximum and minimum memory size to be set Uses
@@ -9,7 +12,7 @@ import java.util.HashMap;
  * @author Tyler, Edward, Justin, Ryan
  *
  */
-public class MemoryManagerModel extends java.util.Observable{
+public class MemoryManagerModel extends java.util.Observable {
 
 	private static ArrayList<BlockOMemory> memoryBlocks;
 	// Holds a list of process id names
@@ -17,9 +20,9 @@ public class MemoryManagerModel extends java.util.Observable{
 	// array of free memory available. Uses 2 ^ index for easy access
 	private static int[] freeMemory;
 	// minimum memory size allowed
-	private  long minMemorySize;
+	private long minMemorySize;
 	// size of the total starting memory
-	private  long maxMemorySize;
+	private long maxMemorySize;
 	// no process value for BlockOMemory
 	private static final int NO_PROCESS = -1;
 
@@ -44,7 +47,8 @@ public class MemoryManagerModel extends java.util.Observable{
 		processIDs = new HashMap<>();
 		memoryBlocks = new ArrayList<>();
 		// Add initial block of memory
-		memoryBlocks.add(new BlockOMemory(maxMemorySize, 0, false, null, NO_PROCESS)); //null=No parent
+		memoryBlocks.add(new BlockOMemory(maxMemorySize, 0, false, null,
+				NO_PROCESS)); // null=No parent
 		freeMemory = new int[Functions.log2(maxMemorySize) + 1];
 		// Set freememory to maxMemory
 		freeMemory[freeMemory.length - 1] = 1;
@@ -67,17 +71,18 @@ public class MemoryManagerModel extends java.util.Observable{
 	public double getMaxMemorySize() {
 		return maxMemorySize;
 	}
-	
-	
+
 	/**
-	 *  This method allows memory to be allocated using the Buddy Memory System.
-	 *  A list of available memory slots is checked to see if any memory is
-	 *  available.
-	 * @param processSize The process size to allocate.
-	 * @param id The ID that should be assigned to this process.
+	 * This method allows memory to be allocated using the Buddy Memory System.
+	 * A list of available memory slots is checked to see if any memory is
+	 * available.
+	 * 
+	 * @param processSize
+	 *            The process size to allocate.
+	 * @param id
+	 *            The ID that should be assigned to this process.
 	 */
-	public void allocateMemory(long processSize, int id)
-	{
+	public void allocateMemory(long processSize, int id) {
 		System.out.println("Attempting to allocate memory of size "
 				+ processSize);
 		if (processSize < minMemorySize)
@@ -87,95 +92,89 @@ public class MemoryManagerModel extends java.util.Observable{
 					.println("Process size greater than maximum size allowed");
 		else if (processIDs.containsKey(id))
 			System.out.println("ID: #" + id + " already in use.");
-		else
-		{
+		else {
 			allocateMemoryHelper(processSize, id);
-			notifyObservers(); //MVC, notify all observers
+			notifyObservers(); // MVC, notify all observers
 		}
 	}
-	
-	private int findClosestPowerOf2(long processSize)
-	{
+
+	private int findClosestPowerOf2(long processSize) {
 		// finds power of 2 closest and >= processSize
 		int x;
-				if (Functions.isPowerOfTwo(processSize))
-				{
-					x = Functions.log2(processSize);
-				} else
-				{
-					x = Functions.log2(processSize) + 1;
-				}
-				return x;
+		if (Functions.isPowerOfTwo(processSize)) {
+			x = Functions.log2(processSize);
+		} else {
+			x = Functions.log2(processSize) + 1;
+		}
+		return x;
 	}
 
 	/**
 	 *
-	 * A helper function that will allocate memory using the Buddy Memory System.
+	 * A helper function that will allocate memory using the Buddy Memory
+	 * System.
+	 * 
 	 * @author Edward Carter
 	 * @param processSize
 	 * @param id
 	 */
-	private void allocateMemoryHelper(long processSize, int id)
-	{
+	private void allocateMemoryHelper(long processSize, int id) {
 		boolean noSpaceAvailable = false;
 		boolean sizeFound = false;
 		int x = findClosestPowerOf2(processSize);
 		// uses that power of 2 to look in freememory array for available
 		// space
-		while (!sizeFound)
-		{
+		while (!sizeFound) {
 			// finds closest available memory chunk size to what is needed
-			if (Math.pow(2, x) > (maxMemorySize))
-			{
+			if (Math.pow(2, x) > (maxMemorySize)) {
 				noSpaceAvailable = true;
 				break;
 				// have exceeded maximum space
-			} else if (freeMemory[x] > 0)
-			{
+			} else if (freeMemory[x] > 0) {
 				sizeFound = true;
 
-			} else
-			{
+			} else {
 				x++;
 			}
 		}
-		if (!noSpaceAvailable)
-		{
+		if (!noSpaceAvailable) {
 			boolean memoryFound = false;
 			int i = 0;
 			// finds the closest chunk of memory size's index
-			while (!memoryFound && i < memoryBlocks.size())
-			{
+			while (!memoryFound && i < memoryBlocks.size()) {
 				if (memoryBlocks.get(i).getMemorySize() >= processSize
 						&& !memoryBlocks.get(i).isProcess()
-						&& memoryBlocks.get(i).getMemorySize() == Math.pow(2, x))
-				{
-					if (processSize <= (memoryBlocks.get(i).getMemorySize() / 2))
-					{
+						&& memoryBlocks.get(i).getMemorySize() == Math
+								.pow(2, x)) {
+					if (processSize <= (memoryBlocks.get(i).getMemorySize() / 2)) {
 						// Splits memory chunk in two if its large enough to
 						// allocate the process
 						long blockSize = memoryBlocks.get(i).getMemorySize();
-						BlockOMemory parent = memoryBlocks.get(i); //the new parent
-						//Remove the new parent from the array
+						BlockOMemory parent = memoryBlocks.get(i); // the new
+																	// parent
+						// Remove the new parent from the array
 						memoryBlocks.remove(parent);
-						
-						//Block1 has a process in it
-						BlockOMemory block1 = new BlockOMemory((blockSize / 2), processSize, false, parent, NO_PROCESS); 
-						//Block 2 does not have a process in it
-						BlockOMemory block2 = new BlockOMemory((blockSize / 2), processSize, false, parent, NO_PROCESS);
-						//Add the blocks into our array
+
+						// Block1 has a process in it
+						BlockOMemory block1 = new BlockOMemory((blockSize / 2),
+								processSize, false, parent, NO_PROCESS);
+						// Block 2 does not have a process in it
+						BlockOMemory block2 = new BlockOMemory((blockSize / 2),
+								processSize, false, parent, NO_PROCESS);
+						// Add the blocks into our array
 						memoryBlocks.add(i, block1);
-						memoryBlocks.add(i+1, block2);
+						memoryBlocks.add(i + 1, block2);
 						System.out.println("MEM BLOCKS = " + memoryBlocks);
-						System.out.println("Split ran. Turned size " + blockSize
-								+ " into two blocks of size " + blockSize / 2);
+						System.out.println("Split ran. Turned size "
+								+ blockSize + " into two blocks of size "
+								+ blockSize / 2);
 						freeMemory[x] -= 1;
 						x = x - 1;
 						freeMemory[x] += 2;
-						//if (blockSize / 2 == findClosestPowerOf2(processSize))
-						//	return; //we have a perfect fit, don't search anymore
-					} else
-					{
+						// if (blockSize / 2 ==
+						// findClosestPowerOf2(processSize))
+						// return; //we have a perfect fit, don't search anymore
+					} else {
 						// add in the new process
 						memoryFound = true;
 						processIDs.put(id, true);
@@ -184,34 +183,32 @@ public class MemoryManagerModel extends java.util.Observable{
 						memoryBlocks.get(i).setProcessID(id);
 						freeMemory[x] -= 1;
 						System.out.println("Memory of size " + processSize
-								+ " added to block of size " + memoryBlocks.get(i).getMemorySize());
+								+ " added to block of size "
+								+ memoryBlocks.get(i).getMemorySize());
 					}
-				} else
-				{
+				} else {
 					i++;
 				}
 			}
-		} else
-		{
+		} else {
 			System.out.println("No Space available to add this process.");
 		}
 	}
-	
-	
+
 	/**
-	 * Deallocates memory by finding the process ID and marking it as free
-	 * It will perform a merge if necessary
+	 * Deallocates memory by finding the process ID and marking it as free It
+	 * will perform a merge if necessary
+	 * 
 	 * @param process
 	 */
-	public void deallocateMemory(int process)
-	{
+	public void deallocateMemory(int process) {
 		deallocateMemoryHelper(process);
 		notifyObservers();
 	}
 
 	/**
-	 * Helper method that deallocates the memory by finding the given process id and changing block
-	 * values
+	 * Helper method that deallocates the memory by finding the given process id
+	 * and changing block values
 	 *
 	 * @author Justin Hyland
 	 * @param process
@@ -245,39 +242,45 @@ public class MemoryManagerModel extends java.util.Observable{
 
 	}// end deallocate
 
-	
-	
 	/**
 	 * Finds two chunks of memory with no processes and are buddies. Puts the
-	 * two given chunks together to make a larger chunk using the parents as reference.
-	 * This process can be thought of as checking the children of a parent node in a binary tree
-	 * and if they are both free, to remove them both.
+	 * two given chunks together to make a larger chunk using the parents as
+	 * reference. This process can be thought of as checking the children of a
+	 * parent node in a binary tree and if they are both free, to remove them
+	 * both.
 	 * 
 	 * @author Ryan Smith
 	 * @param blockIndex
 	 */
-	private void mergeMemory() 
-	{
+	private void mergeMemory() {
 		if (memoryBlocks.size() < 2)
-			return; //Do not even attempt a merge
-		for (int i = 0; i<memoryBlocks.size() - 1; i++)
-		{
+			return; // Do not even attempt a merge
+		for (int i = 0; i < memoryBlocks.size() - 1; i++) {
 			BlockOMemory block = memoryBlocks.get(i);
 			BlockOMemory possibleBuddy = memoryBlocks.get(i + 1);
-			if (block.getParent() == possibleBuddy.getParent() && !block.isProcess() && !possibleBuddy.isProcess())
-			{
-				//They have the same parent and are both free, so coalesce!
+			if (block.getParent() == possibleBuddy.getParent()
+					&& !block.isProcess() && !possibleBuddy.isProcess()) {
+				// They have the same parent and are both free, so coalesce!
 				memoryBlocks.remove(block);
 				memoryBlocks.remove(possibleBuddy);
 				block.getParent().setProcessSize(0.0);
-				memoryBlocks.add(i, block.getParent()); //insert the parent block at the ith location
-				
-				int j = Functions.log2(block.getMemorySize()); //get the index in our freeMemory array for this block
-				freeMemory[j] = freeMemory[j] - 2; //there are 2 less blocks of this size 2^j
-				freeMemory[j+1]++; //there is 1 more of this higher block size 2^(j+1)
-				
-				//There might be a "chain" of coalescing that can be performed
-				//So since we performed a merge, we shall call the method again.
+				memoryBlocks.add(i, block.getParent()); // insert the parent
+														// block at the ith
+														// location
+
+				int j = Functions.log2(block.getMemorySize()); // get the index
+																// in our
+																// freeMemory
+																// array for
+																// this block
+				freeMemory[j] = freeMemory[j] - 2; // there are 2 less blocks of
+													// this size 2^j
+				freeMemory[j + 1]++; // there is 1 more of this higher block
+										// size 2^(j+1)
+
+				// There might be a "chain" of coalescing that can be performed
+				// So since we performed a merge, we shall call the method
+				// again.
 				mergeMemory();
 			}
 		}
@@ -288,7 +291,7 @@ public class MemoryManagerModel extends java.util.Observable{
 	 * 
 	 * @return ArrayList of memory blocks
 	 */
-	public  ArrayList<BlockOMemory> getMemoryBlocks() {
+	public ArrayList<BlockOMemory> getMemoryBlocks() {
 		return memoryBlocks;
 	}
 

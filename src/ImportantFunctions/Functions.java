@@ -1,3 +1,7 @@
+package ImportantFunctions;
+
+import javax.swing.JTextField;
+
 /**
  * Needed Math Function
  * 
@@ -35,5 +39,16 @@ public class Functions {
 	 */
 	public static int log2(long num) {
 		return (int) (Math.log(num) / Math.log(2));
+	}
+
+	/**
+	 * Gets the long value of a text field
+	 * 
+	 * @param textField
+	 *            a text field
+	 * @return a long representation of the value of the text field
+	 */
+	public static long getLongValue(JTextField textField) {
+		return Long.parseLong(textField.getText());
 	}
 }
