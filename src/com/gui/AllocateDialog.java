@@ -88,14 +88,42 @@ public class AllocateDialog extends JDialog implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == bAddDone) {
-			// TODO create memory. Remember to account for not enough memory and
-			// id already memory.
-			model.allocateMemory(Long.parseLong(tSize.getText()), Integer.parseInt(tID.getText()));
+			try {
+				long size = Long.parseLong(tSize.getText());
+				int id = Integer.parseInt(tID.getText());
+				if (id < 0) {
+					JOptionPane.showMessageDialog(this,
+							"ID must be greater than or equal to zero",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				} else {
+					model.allocateMemory(size, id);
+				}
+			} catch (NumberFormatException nfe) {
+				JOptionPane.showMessageDialog(
+						this,
+						"ID and process size must be positive integers\n"
+								+ nfe.getMessage(), "Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
 			dispose();
 		} else if (e.getSource() == bAddMore) {
-			// TODO create memory. Remember to account for not enough memory and
-			// an id already in memory.
-			model.allocateMemory(Long.parseLong(tSize.getText()), Integer.parseInt(tID.getText()));
+			try {
+				long size = Long.parseLong(tSize.getText());
+				int id = Integer.parseInt(tID.getText());
+				if (id < 0) {
+					JOptionPane.showMessageDialog(this,
+							"ID must be greater than or equal to zero",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				} else {
+					model.allocateMemory(size, id);
+				}
+			} catch (NumberFormatException nfe) {
+				JOptionPane.showMessageDialog(
+						this,
+						"ID and process size must be positive integers\n"
+								+ nfe.getMessage(), "Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
 			tID.setText("");
 			tSize.setText("");
 

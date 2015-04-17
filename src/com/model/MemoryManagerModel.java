@@ -1,4 +1,5 @@
 package com.model;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ public class MemoryManagerModel extends java.util.Observable {
 	private long maxMemorySize;
 	// no process value for BlockOMemory
 	private static final int NO_PROCESS = -1;
+	// memory in use
 	private static long usedMemory = 0;
 
 	/**
@@ -38,7 +40,7 @@ public class MemoryManagerModel extends java.util.Observable {
 	 */
 	public MemoryManagerModel(long minMemorySize, long maxMemorySize) {
 		if (!Functions.isPowerOfTwo(minMemorySize)
-				&& !Functions.isPowerOfTwo(maxMemorySize)) {
+				|| !Functions.isPowerOfTwo(maxMemorySize)) {
 			throw new IllegalArgumentException(
 					"The Min and Max Memory must be a power of 2");
 		}
@@ -84,8 +86,6 @@ public class MemoryManagerModel extends java.util.Observable {
 	 *            The ID that should be assigned to this process.
 	 */
 	public void allocateMemory(long processSize, int id) {
-		System.out.println("Attempting to allocate memory of size "
-				+ processSize);
 		if (processSize < minMemorySize)
 			displayMessage("Process size less than minimum size allowed.");
 		else if (processSize > (maxMemorySize))
@@ -93,14 +93,15 @@ public class MemoryManagerModel extends java.util.Observable {
 		else if (processIDs.containsKey(id))
 			displayMessage("ID: #" + id + " already in use.");
 		else {
-			displayMessage("Allocate process with id = " + id + " and procSize = " + processSize); // MVC, notify all observers
+			displayMessage("Allocate process with id = " + id
+					+ " and procSize = " + processSize); // MVC, notify all
+															// observers
 			allocateMemoryHelper(processSize, id);
 			setChanged();
 		}
 	}
-	
-	private void displayMessage(String msg)
-	{
+
+	private void displayMessage(String msg) {
 		setChanged();
 		notifyObservers(msg);
 	}
@@ -172,10 +173,6 @@ public class MemoryManagerModel extends java.util.Observable {
 						// Add the blocks into our array
 						memoryBlocks.add(i, block1);
 						memoryBlocks.add(i + 1, block2);
-						System.out.println("MEM BLOCKS = " + memoryBlocks);
-						System.out.println("Split ran. Turned size "
-								+ blockSize + " into two blocks of size "
-								+ blockSize / 2);
 						freeMemory[x] -= 1;
 						x = x - 1;
 						freeMemory[x] += 2;
@@ -184,7 +181,8 @@ public class MemoryManagerModel extends java.util.Observable {
 						// return; //we have a perfect fit, don't search anymore
 					} else {
 						// add in the new process
-						usedMemory = usedMemory + memoryBlocks.get(i).getMemorySize();
+						usedMemory = usedMemory
+								+ memoryBlocks.get(i).getMemorySize();
 						displayMessage("Progress update " + usedMemory);
 						memoryFound = true;
 						processIDs.put(id, true);
@@ -225,7 +223,6 @@ public class MemoryManagerModel extends java.util.Observable {
 	 */
 	private void deallocateMemoryHelper(int process) {
 		boolean processRemoved = false;
-		System.out.println("Attempting to deallocate process #" + process);
 		// Traverse through every Block in memory and find the matching
 		for (BlockOMemory x : memoryBlocks) {
 
@@ -236,7 +233,7 @@ public class MemoryManagerModel extends java.util.Observable {
 				freeMemory[i] += 1;
 				usedMemory = usedMemory - x.getMemorySize();
 				displayMessage("Progress update " + usedMemory);
-				
+
 				processIDs.remove(process);
 				displayMessage("Process #" + process + " of size "
 						+ x.getProcessSize() + " deallocated successfully.");
@@ -299,7 +296,7 @@ public class MemoryManagerModel extends java.util.Observable {
 			}
 		}
 	}
-	
+
 	/**
 	 * Gets the list of memory blocks
 	 * 

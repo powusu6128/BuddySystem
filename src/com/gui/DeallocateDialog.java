@@ -34,6 +34,7 @@ public class DeallocateDialog extends JDialog implements ActionListener {
 	JButton bRemoveDone;
 	JButton bRemoveMore;
 	MemoryManagerModel model;
+
 	public DeallocateDialog(JFrame frame, MemoryManagerModel model) {
 		super(frame, "Deallocate Memory");
 		this.model = model;
@@ -80,16 +81,37 @@ public class DeallocateDialog extends JDialog implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == bRemoveDone) {
-			// TODO create memory. Remember to account for not enough memory and
-			// id already memory.
-			model.deallocateMemory(Integer.parseInt(tID.getText()));
+			try {
+				int id = Integer.parseInt(tID.getText());
+				if (id < 0) {
+					JOptionPane.showMessageDialog(this,
+							"ID must be a positive number.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					model.deallocateMemory(id);
+				}
+			} catch (NumberFormatException nfe) {
+				JOptionPane.showMessageDialog(this,
+						"Valid integer must be inputed.\n" + nfe.getMessage(),
+						"Error", JOptionPane.ERROR_MESSAGE);
+			}
 			dispose();
 		} else if (e.getSource() == bRemoveMore) {
-			// TODO create memory. Remember to account for not enough memory and
-			// an id already in memory.
-			model.deallocateMemory(Integer.parseInt(tID.getText()));
+			try {
+				int id = Integer.parseInt(tID.getText());
+				if (id < 0) {
+					JOptionPane.showMessageDialog(this,
+							"ID must be a positive number.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					model.deallocateMemory(id);
+				}
+			} catch (NumberFormatException nfe) {
+				JOptionPane.showMessageDialog(this,
+						"Valid integer must be inputed.\n" + nfe.getMessage(),
+						"Error", JOptionPane.ERROR_MESSAGE);
+			}
 			tID.setText("");
-
 		}
 	}
 }

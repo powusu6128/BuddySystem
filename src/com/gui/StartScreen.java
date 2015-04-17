@@ -2,13 +2,10 @@ package com.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Event;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -21,8 +18,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
 
 import ImportantFunctions.Functions;
@@ -55,7 +50,7 @@ public class StartScreen extends JFrame implements ActionListener {
 	 */
 	public StartScreen() {
 		super("Memory Manager Start Up");
-		
+
 		setResizable(false);
 		setMinimumSize(new Dimension(325, 200));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -147,27 +142,34 @@ public class StartScreen extends JFrame implements ActionListener {
 				tFilePath.setText(fc.getSelectedFile().getAbsolutePath());
 			}
 		} else if (e.getSource() == bStartMemoryManager) {
-			if (Functions.getLongValue(tMinSize) > Functions
-					.getLongValue(tMaxSize)) {
-				JOptionPane
-						.showMessageDialog(mainPanel,
-								"Min text box value must be less than max text box value");
-			} else {
-				try {
-					new MainObserver(new MemoryManagerModel(
-							Functions.getLongValue(tMinSize),
-							Functions.getLongValue(tMaxSize)),
-							rManualInput.isSelected() ? true : false,
-							tFilePath.getText());
-					dispose();
-				} catch (IllegalArgumentException ex) {
-					JOptionPane.showMessageDialog(mainPanel,
-							"Only valid input is an integer that is a power of 2.\n"
-									+ ex.getMessage(), "Error",
-							JOptionPane.ERROR_MESSAGE);
+			try {
+				if (Functions.getLongValue(tMinSize) > Functions
+						.getLongValue(tMaxSize)) {
+					JOptionPane
+							.showMessageDialog(mainPanel,
+									"Min text box value must be less than max text box value");
+				} else {
+					try {
+						new MainObserver(new MemoryManagerModel(
+								Functions.getLongValue(tMinSize),
+								Functions.getLongValue(tMaxSize)),
+								rManualInput.isSelected() ? true : false,
+								tFilePath.getText());
+						dispose();
+					} catch (IllegalArgumentException ex) {
+						JOptionPane.showMessageDialog(mainPanel,
+								"Only valid input is an integer that is a power of 2.\n"
+										+ ex.getMessage(), "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
 				}
+			} catch (NumberFormatException nfe) {
+				JOptionPane.showMessageDialog(
+						this,
+						"Memory size must be integer power of 2 value\n"
+								+ nfe.getMessage(), "Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
-
 		}
 	}
 }
