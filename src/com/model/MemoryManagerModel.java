@@ -1,4 +1,4 @@
-package com.model;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,6 +25,7 @@ public class MemoryManagerModel extends java.util.Observable {
 	private long maxMemorySize;
 	// no process value for BlockOMemory
 	private static final int NO_PROCESS = -1;
+	private static long usedMemory = 0;
 
 	/**
 	 * Constructor to create a new MemoryManager
@@ -182,6 +183,8 @@ public class MemoryManagerModel extends java.util.Observable {
 						// return; //we have a perfect fit, don't search anymore
 					} else {
 						// add in the new process
+						usedMemory = usedMemory + memoryBlocks.get(i).getMemorySize();
+						displayMessage("Progress update " + usedMemory);
 						memoryFound = true;
 						processIDs.put(id, true);
 						memoryBlocks.get(i).setProcessSize(processSize);
@@ -230,6 +233,9 @@ public class MemoryManagerModel extends java.util.Observable {
 				processRemoved = true;
 				int i = Functions.log2(x.getMemorySize());
 				freeMemory[i] += 1;
+				usedMemory = usedMemory - x.getMemorySize();
+				displayMessage("Progress update " + usedMemory);
+				
 				processIDs.remove(process);
 				displayMessage("Process #" + process + " of size "
 						+ x.getProcessSize() + " deallocated successfully.");
@@ -291,7 +297,7 @@ public class MemoryManagerModel extends java.util.Observable {
 			}
 		}
 	}
-
+	
 	/**
 	 * Gets the list of memory blocks
 	 * 
