@@ -17,6 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
+import com.model.MemoryManagerModel;
+
 /**
  * Allocate Dialog
  * 
@@ -32,10 +34,12 @@ public class AllocateDialog extends JDialog implements ActionListener {
 	JTextField tSize;
 	JButton bAddDone;
 	JButton bAddMore;
+	MemoryManagerModel model;
 
-	public AllocateDialog(JFrame frame) {
+	public AllocateDialog(JFrame frame, MemoryManagerModel model) {
 		super(frame, "Allocate Memory");
 		setResizable(false);
+		this.model = model;
 		lID = new JLabel("Process ID: ");
 		lSize = new JLabel("Process Size: ");
 		tID = new JTextField(5);
@@ -86,12 +90,12 @@ public class AllocateDialog extends JDialog implements ActionListener {
 		if (e.getSource() == bAddDone) {
 			// TODO create memory. Remember to account for not enough memory and
 			// id already memory.
-			JOptionPane.showMessageDialog(null, "Memory Allocated & Done");
+			model.allocateMemory(Long.parseLong(tSize.getText()), Integer.parseInt(tID.getText()));
 			dispose();
 		} else if (e.getSource() == bAddMore) {
 			// TODO create memory. Remember to account for not enough memory and
 			// an id already in memory.
-			JOptionPane.showMessageDialog(null, "Memory Allocated & More");
+			model.allocateMemory(Long.parseLong(tSize.getText()), Integer.parseInt(tID.getText()));
 			tID.setText("");
 			tSize.setText("");
 

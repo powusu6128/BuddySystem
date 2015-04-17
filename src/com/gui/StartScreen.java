@@ -158,7 +158,7 @@ public class StartScreen extends JFrame implements ActionListener {
 							rManualInput.isSelected() ? true : false,
 							tFilePath.getText());
 					dispose();
-				} catch (Exception ex) {
+				} catch (IllegalArgumentException ex) {
 					JOptionPane.showMessageDialog(mainPanel,
 							"Only valid input is an integer that is a power of 2.\n"
 									+ ex.getMessage(), "Error",

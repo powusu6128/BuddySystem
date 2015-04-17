@@ -86,16 +86,22 @@ public class MemoryManagerModel extends java.util.Observable {
 		System.out.println("Attempting to allocate memory of size "
 				+ processSize);
 		if (processSize < minMemorySize)
-			System.out.println("Process size less than minimum size allowed.");
+			displayMessage("Process size less than minimum size allowed.");
 		else if (processSize > (maxMemorySize))
-			System.out
-					.println("Process size greater than maximum size allowed");
+			displayMessage("Process size greater than maximum size allowed");
 		else if (processIDs.containsKey(id))
-			System.out.println("ID: #" + id + " already in use.");
+			displayMessage("ID: #" + id + " already in use.");
 		else {
+			displayMessage("Allocate process with id = " + id + " and procSize = " + processSize); // MVC, notify all observers
 			allocateMemoryHelper(processSize, id);
-			notifyObservers(); // MVC, notify all observers
+			setChanged();
 		}
+	}
+	
+	private void displayMessage(String msg)
+	{
+		setChanged();
+		notifyObservers(msg);
 	}
 
 	private int findClosestPowerOf2(long processSize) {
@@ -182,7 +188,7 @@ public class MemoryManagerModel extends java.util.Observable {
 						memoryBlocks.get(i).setIsProcess(true);
 						memoryBlocks.get(i).setProcessID(id);
 						freeMemory[x] -= 1;
-						System.out.println("Memory of size " + processSize
+						displayMessage("Memory of size " + processSize
 								+ " added to block of size "
 								+ memoryBlocks.get(i).getMemorySize());
 					}
@@ -191,7 +197,7 @@ public class MemoryManagerModel extends java.util.Observable {
 				}
 			}
 		} else {
-			System.out.println("No Space available to add this process.");
+			displayMessage("No Space available to add this process.");
 		}
 	}
 
@@ -202,8 +208,8 @@ public class MemoryManagerModel extends java.util.Observable {
 	 * @param process
 	 */
 	public void deallocateMemory(int process) {
+		displayMessage("Deallocate process # " + process);
 		deallocateMemoryHelper(process);
-		notifyObservers();
 	}
 
 	/**
@@ -225,7 +231,7 @@ public class MemoryManagerModel extends java.util.Observable {
 				int i = Functions.log2(x.getMemorySize());
 				freeMemory[i] += 1;
 				processIDs.remove(process);
-				System.out.println("Process #" + process + " of size "
+				displayMessage("Process #" + process + " of size "
 						+ x.getProcessSize() + " deallocated successfully.");
 				x.setProcessSize(0);
 				x.setIsProcess(false);
@@ -235,7 +241,7 @@ public class MemoryManagerModel extends java.util.Observable {
 
 		}// end for
 		if (!processRemoved) {
-			System.out.println("Process #" + process + " not found.");
+			displayMessage("Process #" + process + " not found.");
 		}
 
 		mergeMemory();

@@ -17,6 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
+import com.model.MemoryManagerModel;
+
 /**
  * Deallocate Memory
  * 
@@ -31,15 +33,16 @@ public class DeallocateDialog extends JDialog implements ActionListener {
 	JTextField tID;
 	JButton bRemoveDone;
 	JButton bRemoveMore;
-
-	public DeallocateDialog(JFrame frame) {
+	MemoryManagerModel model;
+	public DeallocateDialog(JFrame frame, MemoryManagerModel model) {
 		super(frame, "Deallocate Memory");
+		this.model = model;
 		setResizable(false);
 		lID = new JLabel("Process ID: ");
 		tID = new JTextField(5);
-		bRemoveDone = new JButton("Allocate & Done");
+		bRemoveDone = new JButton("Deallocate & Done");
 		bRemoveDone.addActionListener(this);
-		bRemoveMore = new JButton("Allocate & More");
+		bRemoveMore = new JButton("Deallocate & More");
 		bRemoveMore.addActionListener(this);
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -79,12 +82,12 @@ public class DeallocateDialog extends JDialog implements ActionListener {
 		if (e.getSource() == bRemoveDone) {
 			// TODO create memory. Remember to account for not enough memory and
 			// id already memory.
-			JOptionPane.showMessageDialog(null, "Memory Deallocated & Done");
+			model.deallocateMemory(Integer.parseInt(tID.getText()));
 			dispose();
 		} else if (e.getSource() == bRemoveMore) {
 			// TODO create memory. Remember to account for not enough memory and
 			// an id already in memory.
-			JOptionPane.showMessageDialog(null, "Memory Deallocated & More");
+			model.deallocateMemory(Integer.parseInt(tID.getText()));
 			tID.setText("");
 
 		}

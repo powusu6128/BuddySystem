@@ -67,7 +67,7 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
 	public void update(Observable arg0, Object arg1) {
 		// Will be called on allocate() or deallocate()
 		// We will loop through the model's memoryBlocks and re-draw the screen
-
+		tLogArea.append(arg1.toString() + "\n");
 	}
 
 	public MainObserver(MemoryManagerModel model, boolean isManual, String file) {
@@ -131,6 +131,8 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
 		add(mainPanel, BorderLayout.CENTER);
 		pack();
 		setVisible(true);
+		getGraphics().drawRect(500, 500, 500, 500);
+
 	}
 
 	/**
@@ -221,15 +223,16 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
 		g.gridwidth = 2;
 		p.add(bMode, g);
 		visualSide.add(p, BorderLayout.SOUTH);
+		
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == bAllocate || e.getSource() == iAllocate) {
-			new AllocateDialog(new JFrame());
+			new AllocateDialog(new JFrame(), model);
 		} else if (e.getSource() == bDeallocate || e.getSource() == iDeallocate) {
-			new DeallocateDialog(new JFrame());
+			new DeallocateDialog(new JFrame(), model);
 		} else if (e.getSource() == iRestart) {
 			new StartScreen();
 			dispose();
