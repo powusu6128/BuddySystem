@@ -1,4 +1,4 @@
-
+package com.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -157,6 +157,7 @@ public class MemoryManagerModel extends java.util.Observable {
 						// Splits memory chunk in two if its large enough to
 						// allocate the process
 						long blockSize = memoryBlocks.get(i).getMemorySize();
+						displayMessage("Split block of size " + blockSize);
 						BlockOMemory parent = memoryBlocks.get(i); // the new
 																	// parent
 						// Remove the new parent from the array
@@ -270,6 +271,7 @@ public class MemoryManagerModel extends java.util.Observable {
 		for (int i = 0; i < memoryBlocks.size() - 1; i++) {
 			BlockOMemory block = memoryBlocks.get(i);
 			BlockOMemory possibleBuddy = memoryBlocks.get(i + 1);
+			displayMessage("Merged two blocks of size " + block.getMemorySize());
 			if (block.getParent() == possibleBuddy.getParent()
 					&& !block.isProcess() && !possibleBuddy.isProcess()) {
 				// They have the same parent and are both free, so coalesce!

@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
 
 import ImportantFunctions.Functions;
@@ -54,6 +55,7 @@ public class StartScreen extends JFrame implements ActionListener {
 	 */
 	public StartScreen() {
 		super("Memory Manager Start Up");
+		
 		setResizable(false);
 		setMinimumSize(new Dimension(325, 200));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

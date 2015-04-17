@@ -1,3 +1,6 @@
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+
 import com.gui.StartScreen;
 
 /**
@@ -22,6 +25,11 @@ public class Main {
 		// // m.allocateMemory(7, 3);
 		// System.out.println("Printing array of memory.");
 		// System.out.println(m);
+		try {
+		    UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Exception e) {
+		    // If Nimbus is not available, you can set the GUI to another look and feel.
+		}
 		StartScreen f = new StartScreen();
 		// f.setVisible(true);
 		// AllocateDialog a = new AllocateDialog(new JFrame());
