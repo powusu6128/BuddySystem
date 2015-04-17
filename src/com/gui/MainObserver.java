@@ -67,7 +67,16 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
 	public void update(Observable arg0, Object arg1) {
 		// Will be called on allocate() or deallocate()
 		// We will loop through the model's memoryBlocks and re-draw the screen
-		tLogArea.append(arg1.toString() + "\n");
+		if (arg1.toString().startsWith("Progress"))
+		{
+			String[] splited = arg1.toString().split(" ");
+			int memoryInUse = Integer.parseInt(splited[2]);
+			memoryUsage.setValue(memoryInUse);
+		}
+		else
+		{
+			tLogArea.append(arg1.toString() + "\n");
+		}
 	}
 
 	public MainObserver(MemoryManagerModel model, boolean isManual, String file) {
