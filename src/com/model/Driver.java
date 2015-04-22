@@ -1,9 +1,8 @@
 package com.model;
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+  * This Driver class creates allocation calls and deallocation calls randomly, with random process
+ *  IDs and sizes
  */
 /**
  *
@@ -20,7 +19,8 @@ import javax.swing.Timer;
 
 /**
  *
- * @author hylan_000
+ * This Driver class creates allocation calls and deallocation calls randomly, with random process
+ *  IDs and sizes
  */
 public class Driver implements ActionListener {
 
@@ -52,6 +52,10 @@ public class Driver implements ActionListener {
 
     }//end constructor
 
+    /**
+     * Calls random allocation and deallocation
+     * Returns: None
+     */
     public void drive() {
 
         HashMap<Integer, Boolean> processIDs;
