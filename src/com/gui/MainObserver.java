@@ -153,7 +153,7 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
         mMode = new JMenu("Mode");
         mHelp = new JMenu("Help");
         iAbout = new JMenuItem("About");
-        iAutoMode = new JRadioButtonMenuItem("File");
+        iAutoMode = new JRadioButtonMenuItem("Simulate");
         iManualMode = new JRadioButtonMenuItem("Manual");
         tLogArea = new JTextArea(30, 25);
         bAllocate = new JButton("Allocate");
@@ -233,7 +233,7 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
         iManualMode.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
                 Event.CTRL_MASK));
         iAutoMode.addActionListener(this);
-        iAutoMode.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F,
+        iAutoMode.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
                 Event.CTRL_MASK));
         iAbout.addActionListener(this);
         iAbout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I,

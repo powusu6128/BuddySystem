@@ -11,7 +11,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,7 +21,6 @@ import javax.swing.border.BevelBorder;
 
 import ImportantFunctions.Functions;
 
-import com.model.Driver;
 import com.model.MemoryManagerModel;
 
 /**

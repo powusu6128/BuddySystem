@@ -56,10 +56,8 @@ public class MemoryManagerModel extends java.util.Observable {
 		// Set freememory to maxMemory
 		freeMemory[freeMemory.length - 1] = 1;
 	}
-	
-	
-	public long getUsedMemory()
-	{
+
+	public long getUsedMemory() {
 		return usedMemory;
 	}
 
@@ -228,6 +226,10 @@ public class MemoryManagerModel extends java.util.Observable {
 	 * @param process
 	 */
 	private void deallocateMemoryHelper(int process) {
+		if (process < 0) {
+			displayMessage("Process ID must be >= 0");
+			return;
+		}
 		boolean processRemoved = false;
 		// Traverse through every Block in memory and find the matching
 		for (BlockOMemory x : memoryBlocks) {
