@@ -48,7 +48,6 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
     private static final long serialVersionUID = 1L;
     private MemoryManagerModel model;
     private boolean isManual;
-    private String sFile;
     private JLabel tMode;
     private JPanel mainPanel;
     private JPanel visualSide;
@@ -64,13 +63,14 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
     private JMenuItem iRestart;
     private JMenuItem iExit;
     private JRadioButtonMenuItem iManualMode;
-    private JRadioButtonMenuItem iFileMode;
+    private JRadioButtonMenuItem iAutoMode;
     private JTextArea tLogArea;
     private JButton bAllocate;
     private JButton bDeallocate;
     private JButton bMode;
     private JProgressBar memoryUsage;
     private MemoryPanel memPanel;
+    private Timer timer;
 
     /**
      *
@@ -80,7 +80,7 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
     class MemoryPanel extends JPanel {
 
         private static final long serialVersionUID = 1L;
-        private static final int WIDTH = 1000/* 1160 */;
+        private static final int WIDTH = 1160/* 1160 */;
         private static final int HEIGHT = 400;
         private int blockWidth = WIDTH / (int) model.getMaxMemorySize();
 
@@ -130,7 +130,7 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
         memPanel.repaint();
     }
 
-    public MainObserver(MemoryManagerModel model, boolean isManual, String file) throws InterruptedException {
+    public MainObserver(MemoryManagerModel model, boolean isManual) throws InterruptedException {
         super("Memory Manager");
         setResizable(true);
         setMinimumSize(new Dimension(1300, 350));
@@ -153,7 +153,7 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
         mMode = new JMenu("Mode");
         mHelp = new JMenu("Help");
         iAbout = new JMenuItem("About");
-        iFileMode = new JRadioButtonMenuItem("File");
+        iAutoMode = new JRadioButtonMenuItem("File");
         iManualMode = new JRadioButtonMenuItem("Manual");
         tLogArea = new JTextArea(30, 25);
         bAllocate = new JButton("Allocate");
@@ -168,19 +168,17 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
         memoryUsage.setStringPainted(true);
         if (isManual) {
             this.isManual = true;
-            this.sFile = "";
             tMode.setText("Manual Input");
             iManualMode.setSelected(true);
 
         } else {
-            tMode.setText("File Input");
+            tMode.setText("Auto Input");
             this.isManual = false;
-            this.sFile = file;
             bAllocate.setEnabled(false);
             bDeallocate.setEnabled(false);
             iAllocate.setEnabled(false);
             iDeallocate.setEnabled(false);
-            iFileMode.setSelected(true);
+            iAutoMode.setSelected(true);
 
                  
            
@@ -201,7 +199,7 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
         setVisible(true);
         
         final Driver driver = new Driver(model);
-        Timer timer = new Timer(500, new ActionListener() {
+        timer = new Timer(250, new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -210,6 +208,7 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
 
             }
         });
+        if (!isManual)
             timer.start();
 
     }
@@ -233,14 +232,14 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
         iManualMode.addActionListener(this);
         iManualMode.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
                 Event.CTRL_MASK));
-        iFileMode.addActionListener(this);
-        iFileMode.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F,
+        iAutoMode.addActionListener(this);
+        iAutoMode.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F,
                 Event.CTRL_MASK));
         iAbout.addActionListener(this);
         iAbout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I,
                 Event.CTRL_MASK));
         ButtonGroup group = new ButtonGroup();
-        group.add(iFileMode);
+        group.add(iAutoMode);
         group.add(iManualMode);
         mFile.add(iAllocate);
         mFile.add(iDeallocate);
@@ -248,7 +247,7 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
         mFile.add(iRestart);
         mFile.add(iExit);
         mMode.add(iManualMode);
-        mMode.add(iFileMode);
+        mMode.add(iAutoMode);
         mHelp.add(iAbout);
         menuBar.add(mFile);
         menuBar.add(mMode);
@@ -328,14 +327,16 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
             bAllocate.setEnabled(true);
             bDeallocate.setEnabled(true);
             isManual = true;
-        } else if (e.getSource() == iFileMode) {
-            tMode.setText("File Mode");
+            timer.stop();
+        } else if (e.getSource() == iAutoMode) {
+            tMode.setText("Auto Mode");
             bAllocate.setEnabled(false);
             bDeallocate.setEnabled(false);
             isManual = false;
+            timer.start();
         } else if (e.getSource() == bMode) {
             if (isManual) {
-                actionPerformed(new ActionEvent(iFileMode,
+                actionPerformed(new ActionEvent(iAutoMode,
                         ActionEvent.ACTION_PERFORMED, ""));
             } else {
                 actionPerformed(new ActionEvent(iManualMode,

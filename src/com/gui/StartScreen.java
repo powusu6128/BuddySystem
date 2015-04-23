@@ -40,11 +40,8 @@ public class StartScreen extends JFrame implements ActionListener {
 	private JTextField tMinSize;
 	private JTextField tMaxSize;
 	private JRadioButton rManualInput;
-	private JRadioButton rFileInput;
-	private JTextField tFilePath;
-	private JButton bBrowse;
+	private JRadioButton rAutoInput;
 	private JButton bStartMemoryManager;
-	private JFileChooser fc;
 
 	/**
 	 * Constructor for StartScreen
@@ -65,16 +62,10 @@ public class StartScreen extends JFrame implements ActionListener {
 		rManualInput = new JRadioButton("Manual Input");
 		rManualInput.setSelected(true);
 		rManualInput.addActionListener(this);
-		rFileInput = new JRadioButton("File Input");
-		rFileInput.addActionListener(this);
-		tFilePath = new JTextField(20);
-		tFilePath.setEnabled(false);
-		bBrowse = new JButton("Open File ...");
-		bBrowse.setEnabled(false);
-		bBrowse.addActionListener(this);
+		rAutoInput = new JRadioButton("Auto Input");
+		rAutoInput.addActionListener(this);
 		bStartMemoryManager = new JButton("Start Memory Manager");
 		bStartMemoryManager.addActionListener(this);
-		fc = new JFileChooser();
 		getContentPane();
 		addComponents();
 		add(mainPanel, BorderLayout.CENTER);
@@ -105,18 +96,18 @@ public class StartScreen extends JFrame implements ActionListener {
 		p.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		ButtonGroup group = new ButtonGroup();
 		group.add(rManualInput);
-		group.add(rFileInput);
+		group.add(rAutoInput);
 		g.gridx = 0;
 		g.gridy = 0;
 		p.add(rManualInput, g);
 		g.gridy++;
-		p.add(rFileInput, g);
+		p.add(rAutoInput, g);
 		g.gridy++;
 		g.gridwidth = GridBagConstraints.REMAINDER;
-		p.add(tFilePath, g);
+		//p.add(tFilePath, g);
 		g.gridx = 1;
 		g.gridy = 1;
-		p.add(bBrowse, g);
+		//p.add(bBrowse, g);
 		mainPanel.add(p);
 		// Bottom Button
 		p = new JPanel();
@@ -129,20 +120,7 @@ public class StartScreen extends JFrame implements ActionListener {
 	 * Overrides Action Performed
 	 */
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == rFileInput) {
-			tFilePath.setEnabled(rFileInput.isSelected());
-			tFilePath.setText("");
-			bBrowse.setEnabled(rFileInput.isSelected());
-		} else if (e.getSource() == rManualInput) {
-			tFilePath.setEnabled(rFileInput.isSelected());
-			tFilePath.setText("");
-			bBrowse.setEnabled(rFileInput.isSelected());
-		} else if (e.getSource() == bBrowse) {
-			int returnVal = fc.showOpenDialog(this);
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				tFilePath.setText(fc.getSelectedFile().getAbsolutePath());
-			}
-		} else if (e.getSource() == bStartMemoryManager) {
+		if (e.getSource() == bStartMemoryManager) {
 			try {
 				if (Functions.getLongValue(tMinSize) > Functions
 						.getLongValue(tMaxSize)) {
@@ -156,8 +134,7 @@ public class StartScreen extends JFrame implements ActionListener {
 							new MainObserver(new MemoryManagerModel(
 									Functions.getLongValue(tMinSize),
 									Functions.getLongValue(tMaxSize)),
-									rManualInput.isSelected() ? true : false,
-									tFilePath.getText());
+									rManualInput.isSelected() ? true : false);
 						} catch (InterruptedException e1)
 						{
 							// TODO Auto-generated catch block
