@@ -22,6 +22,7 @@ import javax.swing.border.BevelBorder;
 
 import ImportantFunctions.Functions;
 
+import com.model.Driver;
 import com.model.MemoryManagerModel;
 
 /**
@@ -150,11 +151,18 @@ public class StartScreen extends JFrame implements ActionListener {
 									"Min text box value must be less than max text box value");
 				} else {
 					try {
-						new MainObserver(new MemoryManagerModel(
-								Functions.getLongValue(tMinSize),
-								Functions.getLongValue(tMaxSize)),
-								rManualInput.isSelected() ? true : false,
-								tFilePath.getText());
+						try
+						{
+							new MainObserver(new MemoryManagerModel(
+									Functions.getLongValue(tMinSize),
+									Functions.getLongValue(tMaxSize)),
+									rManualInput.isSelected() ? true : false,
+									tFilePath.getText());
+						} catch (InterruptedException e1)
+						{
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						dispose();
 					} catch (IllegalArgumentException ex) {
 						JOptionPane.showMessageDialog(mainPanel,

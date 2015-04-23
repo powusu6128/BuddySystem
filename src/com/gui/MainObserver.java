@@ -1,11 +1,13 @@
 package com.gui;
 
 import com.model.Driver;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -38,6 +40,7 @@ import javax.swing.text.DefaultCaret;
 
 import com.model.BlockOMemory;
 import com.model.MemoryManagerModel;
+
 import javax.swing.Timer;
 
 public class MainObserver extends JFrame implements Observer, ActionListener {
@@ -106,6 +109,7 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
                 g.fillRect(left, 10, (int) (blockWidth * m.getMemorySize()),
                         HEIGHT);
                 g.setColor(Color.black);
+                g.setFont(new Font("Arial", 0, 9));
                 g.drawString("ID = " + m.getProcessID(), left, 10);
                 left = left + (int) (blockWidth * m.getMemorySize());
             }
@@ -128,7 +132,7 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
 
     public MainObserver(MemoryManagerModel model, boolean isManual, String file) throws InterruptedException {
         super("Memory Manager");
-        setResizable(false);
+        setResizable(true);
         setMinimumSize(new Dimension(1300, 350));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         tMode = new JLabel();
@@ -178,8 +182,7 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
             iDeallocate.setEnabled(false);
             iFileMode.setSelected(true);
 
-             Driver driver = new Driver(model);
-            
+                 
            
 
         }
@@ -196,6 +199,18 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
         add(mainPanel, BorderLayout.CENTER);
         pack();
         setVisible(true);
+        
+        final Driver driver = new Driver(model);
+        Timer timer = new Timer(500, new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                driver.drive();
+
+            }
+        });
+            timer.start();
 
     }
 

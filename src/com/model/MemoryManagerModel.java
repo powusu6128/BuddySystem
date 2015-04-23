@@ -56,6 +56,12 @@ public class MemoryManagerModel extends java.util.Observable {
 		// Set freememory to maxMemory
 		freeMemory[freeMemory.length - 1] = 1;
 	}
+	
+	
+	public long getUsedMemory()
+	{
+		return usedMemory;
+	}
 
 	/**
 	 * Sets the min memory size
