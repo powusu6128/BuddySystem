@@ -112,7 +112,6 @@ public class Driver {
       {
     	  //Pick a random process to deallocate
     	  int randIndex = random.nextInt(memoryManager.getMemoryBlocks().size());
-    	  int procID = memoryManager.getMemoryBlocks().get(randIndex).getProcessID();
     	  
     	  //Find somewhere that is a process
     	  while (!memoryManager.getMemoryBlocks().get(randIndex).isProcess())
@@ -121,6 +120,7 @@ public class Driver {
     		  if (randIndex >= memoryManager.getMemoryBlocks().size())
     			  randIndex = 0;
     	  }
+    	  int procID = memoryManager.getMemoryBlocks().get(randIndex).getProcessID(); //use the final randIndex AFTER the loop
     	  memoryManager.deallocateMemory(procID);
       }
 

@@ -31,11 +31,14 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.text.DefaultCaret;
 
 import com.model.BlockOMemory;
@@ -71,6 +74,8 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
     private JProgressBar memoryUsage;
     private MemoryPanel memPanel;
     private Timer timer;
+    private JSlider slider;
+    private static int START_DELAY = 250; //250 ms
 
     /**
      *
@@ -199,11 +204,10 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
         setVisible(true);
         
         final Driver driver = new Driver(model);
-        timer = new Timer(250, new ActionListener() {
+        timer = new Timer(START_DELAY, new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 driver.drive();
 
             }
@@ -294,19 +298,43 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
 
         // Bottom stuff
         p = new JPanel();
+        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+        p.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        slider = new JSlider(75, 1000);
+        slider.setMinorTickSpacing(50);
+        slider.setMajorTickSpacing(200);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        slider.setValue(START_DELAY);
+        slider.setPreferredSize(new Dimension(325, 50));
+        slider.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent arg0)
+			{
+        		timer.setDelay(slider.getValue());
+			}
+        });
+        JPanel t = new JPanel(new FlowLayout()); //Create new panel to place jlabel and slide side by side
+        t.add(new JLabel("<html>Delay <i>(ms)</i></html>"));
+        t.add(slider);
+        p.add(t);
+        
+        JPanel buttons = new JPanel();
         GridBagConstraints g = new GridBagConstraints();
         g.gridx = 0;
         g.gridy = 0;
-        p.setLayout(new GridBagLayout());
-        p.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        p.add(bAllocate, g);
+        buttons.setLayout(new GridBagLayout());
+        buttons.add(bAllocate, g);
         g.gridx++;
-        p.add(bDeallocate, g);
+        buttons.add(bDeallocate, g);
         g.gridx = 0;
         g.gridy++;
         g.gridwidth = 2;
-        p.add(bMode, g);
+        buttons.add(bMode, g);
         // visualSide.add(memPanel, BorderLayout.CENTER);
+        
+       p.add(buttons);
         visualSide.add(p, BorderLayout.SOUTH);
 
     }
@@ -328,12 +356,14 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
             bDeallocate.setEnabled(true);
             isManual = true;
             timer.stop();
+            slider.setEnabled(false);
         } else if (e.getSource() == iAutoMode) {
             tMode.setText("Auto Mode");
             bAllocate.setEnabled(false);
             bDeallocate.setEnabled(false);
             isManual = false;
             timer.start();
+            slider.setEnabled(true);
         } else if (e.getSource() == bMode) {
             if (isManual) {
                 actionPerformed(new ActionEvent(iAutoMode,
