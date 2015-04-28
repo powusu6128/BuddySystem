@@ -276,10 +276,10 @@ public class MemoryManagerModel extends java.util.Observable {
 		for (int i = 0; i < memoryBlocks.size() - 1; i++) {
 			BlockOMemory block = memoryBlocks.get(i);
 			BlockOMemory possibleBuddy = memoryBlocks.get(i + 1);
-			displayMessage("Merged two blocks of size " + block.getMemorySize());
 			if (block.getParent() == possibleBuddy.getParent()
 					&& !block.isProcess() && !possibleBuddy.isProcess()) {
 				// They have the same parent and are both free, so coalesce!
+				displayMessage("Merged two blocks of size " + block.getMemorySize());
 				memoryBlocks.remove(block);
 				memoryBlocks.remove(possibleBuddy);
 				block.getParent().setProcessSize(0.0);

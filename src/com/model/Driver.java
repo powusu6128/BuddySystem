@@ -13,7 +13,6 @@ import java.util.Random;
 
 import com.model.MemoryManagerModel;
 
-import javax.swing.Timer;
 
 /**
  *
@@ -24,7 +23,6 @@ public class Driver {
 
     private final Random random;
 
-    private Timer timer;
     private MemoryManagerModel memoryManager;
     private int procIDCounter = 0;
     

@@ -85,7 +85,7 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
     class MemoryPanel extends JPanel {
 
         private static final long serialVersionUID = 1L;
-        private static final int WIDTH = 1160/* 1160 */;
+        private static final int WIDTH = 1000/* 1160 */;
         private static final int HEIGHT = 400;
         private int blockWidth = WIDTH / (int) model.getMaxMemorySize();
 
