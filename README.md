@@ -12,6 +12,7 @@ In this stage, we have developed our own implementation of the Buddy memory allo
 In this stage, we have worked off of the components built in Stage 1 to build a fully functional GUI using Swing. It simulates allocation and deallocation requests randomly. The project depicts such a simulation graphically by drawing blocks. Green denotes that a block is free, while red denotes a block currently holds a process. A screenshot gives a good idea of how the project works:
 ![Screenshot of Buddy System Manager](http://elvis.rowan.edu/~smithr1/buddy_screenshot.png)
 
+**You may download a packaged JAR file if you would like to try this project. Please [click here to download the JAR](http://elvis.rowan.edu/~smithr1/BuddySystem.jar).**
 
 ##Team Members:
 
