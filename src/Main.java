@@ -9,13 +9,13 @@ import com.gui.StartScreen;
  */
 public class Main {
 
-	public static void main(String[] args) {
-		try {
-			UIManager
-					.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Exception e) {
-			// If Nimbus is not available, default will be used
-		}
-		new StartScreen();
-	}
+    public static void main(String[] args) {
+        try {
+            UIManager
+            .setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+            // If Nimbus is not available, default will be used
+        }
+        new StartScreen();
+    }
 }

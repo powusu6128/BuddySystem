@@ -105,7 +105,7 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
                     g.setColor(Color.GREEN);
                 }
                 g.fillRect(left, 10, (int) (blockWidth * m.getMemorySize()),
-                           HEIGHT);
+                        HEIGHT);
                 g.setColor(Color.black);
                 g.setFont(new Font("Arial", 0, 9));
                 g.drawString("ID = " + m.getProcessID(), left, 10);
@@ -120,7 +120,7 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
      */
     @Override
     public void update(Observable arg0, Object arg1) {
-        // Will be called on allocate() or deallocate()
+		// Will be called on allocate() or deallocate()
         // We will loop through the model's memoryBlocks and re-draw the screen
         if (arg1.toString().startsWith("Progress")) {
             String[] splited = arg1.toString().split(" ");
@@ -188,8 +188,8 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
             iDeallocate.setEnabled(false);
             iAutoMode.setSelected(true);
 
-
-
+                 
+           
 
         }
 
@@ -205,7 +205,7 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
         add(mainPanel, BorderLayout.CENTER);
         pack();
         setVisible(true);
-
+        
         final Driver driver = new Driver(model);
         timer = new Timer(START_DELAY, new ActionListener() {
 
@@ -226,25 +226,25 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
     private void setUpMenuBar() {
         iAllocate.addActionListener(this);
         iAllocate.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
-                                 Event.CTRL_MASK));
+                Event.CTRL_MASK));
         iDeallocate.addActionListener(this);
         iDeallocate.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D,
-                                   Event.CTRL_MASK));
+                Event.CTRL_MASK));
         iRestart.addActionListener(this);
         iRestart.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,
-                                Event.CTRL_MASK));
+                Event.CTRL_MASK));
         iExit.addActionListener(this);
         iExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
-                             Event.CTRL_MASK));
+                Event.CTRL_MASK));
         iManualMode.addActionListener(this);
         iManualMode.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
-                                   Event.CTRL_MASK));
+                Event.CTRL_MASK));
         iAutoMode.addActionListener(this);
         iAutoMode.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-                                 Event.CTRL_MASK));
+                Event.CTRL_MASK));
         iAbout.addActionListener(this);
         iAbout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I,
-                              Event.CTRL_MASK));
+                Event.CTRL_MASK));
         ButtonGroup group = new ButtonGroup();
         group.add(iAutoMode);
         group.add(iManualMode);
@@ -267,8 +267,8 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
     private void addLogComponents() {
         JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder(
-                        BorderFactory.createEtchedBorder(), "Log", TitledBorder.CENTER,
-                        TitledBorder.TOP));
+                BorderFactory.createEtchedBorder(), "Log", TitledBorder.CENTER,
+                TitledBorder.TOP));
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
         tLogArea.setEditable(false);
         tLogArea.setWrapStyleWord(true);
@@ -294,7 +294,7 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
         p.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
         p.add(memoryUsage);
         p.add(memPanel);
-        // JPanel panel = new JPanel();
+		// JPanel panel = new JPanel();
         // panel.add(memPanel);
         // p.add(panel);
         visualSide.add(p, BorderLayout.CENTER);
@@ -312,17 +312,17 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
         slider.setPreferredSize(new Dimension(325, 50));
         slider.addChangeListener(new ChangeListener() {
 
-            @Override
-            public void stateChanged(ChangeEvent arg0)
-            {
-                timer.setDelay(slider.getValue());
-            }
+			@Override
+			public void stateChanged(ChangeEvent arg0)
+			{
+        		timer.setDelay(slider.getValue());
+			}
         });
         JPanel t = new JPanel(new FlowLayout()); //Create new panel to place jlabel and slide side by side
         t.add(new JLabel("<html>Delay <i>(ms)</i></html>"));
         t.add(slider);
         p.add(t);
-
+        
         JPanel buttons = new JPanel();
         GridBagConstraints g = new GridBagConstraints();
         g.gridx = 0;
@@ -336,8 +336,8 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
         g.gridwidth = 2;
         buttons.add(bMode, g);
         // visualSide.add(memPanel, BorderLayout.CENTER);
-
-        p.add(buttons);
+        
+       p.add(buttons);
         visualSide.add(p, BorderLayout.SOUTH);
 
     }
@@ -370,19 +370,19 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
         } else if (e.getSource() == bMode) {
             if (isManual) {
                 actionPerformed(new ActionEvent(iAutoMode,
-                                                ActionEvent.ACTION_PERFORMED, ""));
+                        ActionEvent.ACTION_PERFORMED, ""));
             } else {
                 actionPerformed(new ActionEvent(iManualMode,
-                                                ActionEvent.ACTION_PERFORMED, ""));
+                        ActionEvent.ACTION_PERFORMED, ""));
             }
         } else if (e.getSource() == iAbout) {
             JOptionPane
-            .showMessageDialog(
-                mainPanel,
-                "Rowan University Binary Memory Manager Operating Systems Project:\n"
-                + "Created By: Tyler Andjel, Edward Carter, Justin Hyland, Ryan Smith\n"
-                + "Dr. Baliga OS Class", "About",
-                JOptionPane.INFORMATION_MESSAGE);
+                    .showMessageDialog(
+                            mainPanel,
+                            "Rowan University Binary Memory Manager Operating Systems Project:\n"
+                            + "Created By: Tyler Andjel, Edward Carter, Justin Hyland, Ryan Smith\n"
+                            + "Dr. Baliga OS Class", "About",
+                            JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }
