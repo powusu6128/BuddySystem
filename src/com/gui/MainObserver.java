@@ -95,15 +95,8 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
 
         @Override
         protected void paintComponent(Graphics g) {
-            // g.fillRect(10, 10, WIDTH, HEIGHT);
             g.setColor(Color.WHITE);
             g.fillRect(0, 0, getWidth(), getHeight());
-            /*
-             * for (int i = 0; i<=WIDTH; i=i+blockWidth) { g.setColor(new
-             * Color((int)(Math.random() * 255), (int)(Math.random() * 255),
-             * (int)(Math.random() * 255))); g.fillRect(i, 10, blockWidth,
-             * HEIGHT); }
-             */
             int left = 0;
             for (BlockOMemory m : model.getMemoryBlocks()) {
                 if (m.isProcess()) {
@@ -121,6 +114,10 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
         }
     }
 
+    /** Called upon update, i.e. when an allocation or deallocation is performed
+     * (non-Javadoc)
+     * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+     */
     @Override
     public void update(Observable arg0, Object arg1) {
 		// Will be called on allocate() or deallocate()
@@ -135,6 +132,12 @@ public class MainObserver extends JFrame implements Observer, ActionListener {
         memPanel.repaint();
     }
 
+    /**
+     * Creates a new window (JFrame) that observes the allocation and deallocation requests
+     * @param model The model serving the allocation and deallocation requests
+     * @param isManual To use manual mode or automatic mode
+     * @throws InterruptedException
+     */
     public MainObserver(MemoryManagerModel model, boolean isManual) throws InterruptedException {
         super("Memory Manager");
         setResizable(true);

@@ -37,8 +37,7 @@ public class Driver {
     }//end constructor
 
     /**
-     * Calls random allocation and deallocation
-     * Returns: None
+     * Method that will either allocate or deallocate randomly (once per method call)
      */
     public void drive() {
 
@@ -71,7 +70,7 @@ public class Driver {
       }
     }
     
-    /*
+    /**
      * Attempts to find a random free memory block and allocate from there rather than completely randomly
      * This makes the visualization a little nicer
      */
@@ -95,17 +94,24 @@ public class Driver {
    		 memoryManager.allocateMemory((long)blockSize, ++procIDCounter);
     }
     
+    
+    /**
+     * Will perform an allocation by either choosing a "buddy" to allocate, or, choosing  a random size.
+     */
       private void doAllocate()
       {
-    	  if (random.nextInt(100) > 30) //50% of the time do it this way
+    	  if (random.nextInt(100) > 30) //70% of the time do it this way
     		  allocatePair();
-    	  else //50% of the time allocate completely randomly
+    	  else //30% of the time allocate completely randomly
     	  { 
     		  int blockSize = random.nextInt(2) + 4;
     		  memoryManager.allocateMemory(blockSize, ++procIDCounter);
     	  }
       }
       
+      /**
+       * Picks a random process to deallocate.
+       */
       public void doDeallocate()
       {
     	  //Pick a random process to deallocate

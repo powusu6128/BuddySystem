@@ -3,8 +3,8 @@ import javax.swing.UIManager;
 import com.gui.StartScreen;
 
 /**
- * Controller used to talk to GUI. In a Swing based GUI, the controller will
- * typically contain a JFrame.
+ * Main File to be ran upon execution.
+ * Uses the Nimbus look and feel.
  *
  */
 public class Main {
@@ -14,8 +14,7 @@ public class Main {
 			UIManager
 					.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (Exception e) {
-			// If Nimbus is not available, you can set the GUI to another look
-			// and feel.
+			// If Nimbus is not available, default will be used
 		}
 		new StartScreen();
 	}
